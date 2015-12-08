@@ -1,0 +1,519 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Flick Navigation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi" />
+<link rel="stylesheet" href="common.css" type="text/css" />
+<style type="text/css">
+h1 { font-size:16px; font-weight:bold; }
+h2 { margin-top:10px; text-align:center; }
+
+#touchSlider { width:100%; height:150px; margin:0 auto; background:#ccc; position:relative; overflow:hidden; }
+#touchSlider ul { width:99999px; height:150px; position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider ul li { float:left; width:100%; height:150px; background:#9C9; font-size:14px; color:#fff; }
+
+#touchSlider2 { width:200px; height:150px; margin:0 auto; background:#ccc; position:relative; overflow:hidden; }
+#touchSlider2 ul { width:99999px; height:150px; position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider2 ul li { float:left; width:200px; height:150px; background:#9C9; font-size:14px; color:#fff; }
+
+#touchSlider3 { width:240px; height:150px; margin:0 auto; background:#ccc; position:relative; overflow:hidden; }
+#touchSlider3 ul { width:99999px; height:150px; position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider3 ul li { float:left; width:80px; height:150px; background:#9C9; font-size:14px; color:#fff; }
+
+#touchSlider4 { width:240px; height:150px; margin:0 auto; background:#ccc; position:relative; overflow:hidden; }
+#touchSlider4 ul { width:99999px; height:150px; position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider4 ul li { float:left; width:80px; height:150px; background:#9C9; font-size:14px; color:#fff; }
+
+#touchSlider5 { width:100%; height:150px; margin:0 auto; background:#ccc; position:relative; overflow:hidden; }
+#touchSlider5 ul { width:99999px; height:150px; position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider5 ul li { float:left; width:100%; height:150px; background:#9C9; font-size:14px; color:#fff; }
+
+#touchSlider6 { width:100%; height:150px; margin:0 auto; background:#ccc; position:relative; overflow:hidden; }
+#touchSlider6 ul { width:99999px; height:150px; position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider6 ul li { float:left; width:100%; height:150px; background:#9C9; font-size:14px; color:#fff; }
+
+#touchSlider7 { width:100%; height:150px; margin:0 auto; background:#ccc; position:relative; overflow:hidden; }
+#touchSlider7 ul { width:99999px; position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider7 ul li { float:left; width:100%; background:#9C9; font-size:14px; color:#fff; }
+
+.touchSlider8_wrap { background:#ccc; overflow:hidden; }
+#touchSlider8 { height:150px; margin-right:10%; position:relative; overflow:visible; }
+#touchSlider8 ul { width:99999px; position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider8 ul li { float:left; width:100%; height:150px; background:#9C9; font-size:14px; color:#fff; }
+
+.touchSlider9_wrap { background:#ccc; overflow:hidden; }
+#touchSlider9 { height:150px; margin-right:10%; position:relative; overflow:visible; }
+#touchSlider9 ul { width:99999px; position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider9 ul li { float:left; width:100%; height:150px; background:#9C9; font-size:14px; color:#fff; }
+
+.touchSlider10_wrap { background:#ccc; overflow:hidden; }
+#touchSlider10 { height:150px; margin:0 10%; position:relative; overflow:visible; }
+#touchSlider10 ul { width:99999px; position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider10 ul li { float:left; width:100%; height:150px; background:#9C9; font-size:14px; color:#fff; }
+
+.btn_area { background:#f5f5f5; overflow:hidden; }
+.btn_area button { display:block; width:100px; height:36px; background:#000; font-size:16px; color:#fff; font-weight:bold; }
+.btn_area button.btn_prev { float:left; }
+.btn_area button.btn_next { float:right; }
+.btn_area .btn_page { display:inline-block; width:10px; height:10px; margin:3px; font-size:0px; line-height:0; text-indent:-9999px; background:#3399CC; }
+.btn_area .btn_page.on { background:#ff0000; }
+</style>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="jquery.event.drag-1.5.min.js"></script>
+<script type="text/javascript" src="jquery.touchSlider.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+$(document).ready(function() {
+	
+	$("#touchSlider").touchSlider({
+		flexible : true,
+		btn_prev : $("#touchSlider").next().find(".btn_prev"),
+		btn_next : $("#touchSlider").next().find(".btn_next"),
+		counter : function (e) {
+			$("#count").html("current : " + e.current + ", total : " + e.total);
+		}
+	});
+	
+	$("#touchSlider2").touchSlider({
+		roll : false,
+		page : 2,
+		speed : 300,
+		btn_prev : $("#touchSlider2").next().find(".btn_prev"),
+		btn_next : $("#touchSlider2").next().find(".btn_next")
+	});
+	
+	$("#touchSlider3").touchSlider({
+		roll : false,
+		view : 3,
+		btn_prev : $("#touchSlider3").next().find(".btn_prev"),
+		btn_next : $("#touchSlider3").next().find(".btn_next")
+	});
+	
+	$("#touchSlider4").touchSlider({
+		view : 3,
+		btn_prev : $("#touchSlider4").next().find(".btn_prev"),
+		btn_next : $("#touchSlider4").next().find(".btn_next")
+	});
+	
+	$("#touchSlider5").touchSlider({
+		flexible : true,
+		view : 5,
+		btn_prev : $("#touchSlider5").next().find(".btn_prev"),
+		btn_next : $("#touchSlider5").next().find(".btn_next")
+	});
+	
+	$("#touchSlider6").touchSlider({
+		flexible : true,
+		initComplete : function (e) {
+			$("#touchSlider6_paging").html("");
+			var num = 1;
+			$("#touchSlider6 ul li").each(function (i, el) {
+				if((i+1) % e._view == 0) {
+					$("#touchSlider6_paging").append('<button type="button" class="btn_page">page' + (num++) + '</button>');
+				}
+			});
+			$("#touchSlider6_paging .btn_page").bind("click", function (e) {
+				var i = $(this).index();
+				$("#touchSlider6").get(0).go_page(i);
+			});
+		},
+		counter : function (e) {
+			$("#touchSlider6_paging .btn_page").removeClass("on").eq(e.current-1).addClass("on");
+		}
+	});
+	
+	$("#touchSlider7").touchSlider({
+		flexible : true,
+		resize : true,
+		btn_prev : $("#touchSlider7").next().find(".btn_prev"),
+		btn_next : $("#touchSlider7").next().find(".btn_next")
+	});
+	
+	$("#touchSlider8").touchSlider({
+		roll : false,
+		flexible : true,
+		btn_prev : $(".touchSlider8_wrap").next().find(".btn_prev"),
+		btn_next : $(".touchSlider8_wrap").next().find(".btn_next"),
+		counter : function (e) {
+			var _this = $(this);
+			var list_wrap = _this.children();
+			var gap = _this.parent().width() - _this.get(0)._item_w;
+			if(e.current == e.total && e.total > 1) {
+				list_wrap.css({
+					left: gap+"px"
+				});
+			} else {
+				list_wrap.css({
+					left: "0"
+				});
+			}
+		}
+	});
+	
+	$("#touchSlider9").touchSlider({
+		flexible : true,
+		sidePage : true,
+		btn_prev : $(".touchSlider9_wrap").next().find(".btn_prev"),
+		btn_next : $(".touchSlider9_wrap").next().find(".btn_next")
+	});
+	
+	$("#touchSlider10").touchSlider({
+		flexible : true,
+		sidePage : true,
+		btn_prev : $(".touchSlider10_wrap").next().find(".btn_prev"),
+		btn_next : $(".touchSlider10_wrap").next().find(".btn_next")
+	});
+	
+});
+//]]>
+</script>
+</head>
+
+<body>
+<h1>Flick Navigation (jQuery.touchSlider, dohoons)</h1>
+<p>좌우로 터치드래그~ </p>
+
+<h2>1 : rolling, flexible, counter</h2>
+<div id="touchSlider">
+	<ul>
+		<li>
+			content 1
+		</li>
+		<li style="background:#396">
+			content 2
+		</li>
+		<li style="background:#39C">
+			content 3
+		</li>
+		<li style="background:#33C">
+			content 4
+		</li>
+	</ul>
+</div>
+<div class="btn_area">
+	<button type="button" class="btn_prev">prev</button>
+	<button type="button" class="btn_next">next</button>
+	<div id="count" style="height:36px; font-size:16px; line-height:36px; text-align:center;">
+	</div>
+</div>
+
+<h2>2 : limit, page:2, speed:300</h2>
+<div id="touchSlider2">
+	<ul>
+		<li>
+			content 1
+		</li>
+		<li style="background:#396">
+			content 2
+		</li>
+		<li style="background:#39C">
+			content 3
+		</li>
+		<li style="background:#33C">
+			content 4
+		</li>
+	</ul>
+</div>
+<div class="btn_area">
+	<button type="button" class="btn_prev">prev</button>
+	<button type="button" class="btn_next">next</button>
+</div>
+
+<h2>3 : multiple, view:3, limit</h2>
+<div id="touchSlider3">
+	<ul>
+		<li>
+			content 1
+		</li>
+		<li style="background:#396">
+			content 2
+		</li>
+		<li style="background:#39C">
+			content 3
+		</li>
+		<li>
+			content 4
+		</li>
+		<li style="background:#396">
+			content 5
+		</li>
+		<li style="background:#39C">
+			content 6
+		</li>
+		<li>
+			content 7
+		</li>
+		<li style="background:#396">
+			content 8
+		</li>
+		<li style="background:#39C">
+			content 9
+		</li>
+	</ul>
+</div>
+<div class="btn_area">
+	<button type="button" class="btn_prev">prev</button>
+	<button type="button" class="btn_next">next</button>
+</div>
+
+<h2>4 : multiple, view:3, rolling</h2>
+<div id="touchSlider4">
+	<ul>
+		<li>
+			content 1
+		</li>
+		<li style="background:#396">
+			content 2
+		</li>
+		<li style="background:#39C">
+			content 3
+		</li>
+		<li>
+			content 4
+		</li>
+		<li style="background:#396">
+			content 5
+		</li>
+		<li style="background:#39C">
+			content 6
+		</li>
+		<li>
+			content 7
+		</li>
+		<li style="background:#396">
+			content 8
+		</li>
+		<li style="background:#39C">
+			content 9
+		</li>
+	</ul>
+</div>
+<div class="btn_area">
+	<button type="button" class="btn_prev">prev</button>
+	<button type="button" class="btn_next">next</button>
+</div>
+
+<h2>5 : multiple, view:5, flexible, rolling</h2>
+<div id="touchSlider5">
+	<ul>
+		<li>
+			content 1
+		</li>
+		<li style="background:#396">
+			content 2
+		</li>
+		<li style="background:#39C">
+			content 3
+		</li>
+		<li>
+			content 4
+		</li>
+		<li style="background:#396">
+			content 5
+		</li>
+		<li>
+			content 6
+		</li>
+		<li style="background:#396">
+			content 7
+		</li>
+		<li style="background:#39C">
+			content 8
+		</li>
+		<li>
+			content 9
+		</li>
+		<li style="background:#396">
+			content 10
+		</li>
+	</ul>
+</div>
+<div class="btn_area">
+	<button type="button" class="btn_prev">prev</button>
+	<button type="button" class="btn_next">next</button>
+</div>
+
+<h2>6 : flexible, rolling, paging, counter</h2>
+<div id="touchSlider6">
+	<ul>
+		<li>
+			content 1
+		</li>
+		<li style="background:#396">
+			content 2
+		</li>
+		<li style="background:#39C">
+			content 3
+		</li>
+		<li style="background:#33C">
+			content 4
+		</li>
+	</ul>
+</div>
+<div id="touchSlider6_paging" class="btn_area" style="text-align:center;"></div>
+
+<h2>7 : rolling, flexible, resize</h2>
+<div id="touchSlider7">
+	<ul>
+		<li>
+			content 1<br />
+			content 1<br />
+			content 1<br />
+			content 1<br />
+			content 1<br />
+			content 1<br />
+			content 1<br />
+			content 1<br />
+			content 1<br />
+			content 1<br />
+		</li>
+		<li style="background:#396">
+			content 2<br />
+			content 2<br />
+			content 2<br />
+			content 2<br />
+			content 2<br />
+		</li>
+		<li style="background:#39C">
+			content 3<br />
+			content 3<br />
+			content 3<br />
+			content 3<br />
+			content 3<br />
+			content 3<br />
+			content 3<br />
+			content 3<br />
+			content 3<br />
+			content 3<br />
+			content 3<br />
+			content 3<br />
+			content 3<br />
+		</li>
+		<li style="background:#33C">
+			content 4<br />
+			content 4<br />
+			content 4<br />
+			content 4<br />
+			content 4<br />
+			content 4<br />
+			content 4<br />
+		</li>
+	</ul>
+</div>
+<div class="btn_area">
+	<button type="button" class="btn_prev">prev</button>
+	<button type="button" class="btn_next">next</button>
+</div>
+
+<h2>8 : limit, flexible, right-margin</h2>
+<div class="touchSlider8_wrap">
+	<div id="touchSlider8">
+		<ul>
+			<li>
+				content 1
+			</li>
+			<li style="background:#396">
+				content 2
+			</li>
+			<li style="background:#39C">
+				content 3
+			</li>
+			<li style="background:#33C">
+				content 4
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="btn_area">
+	<button type="button" class="btn_prev">prev</button>
+	<button type="button" class="btn_next">next</button>
+</div>
+
+<h2>9 : roll, flexible, right-margin</h2>
+<div class="touchSlider9_wrap">
+	<div id="touchSlider9">
+		<ul>
+			<li>
+				content 1
+			</li>
+			<li style="background:#396">
+				content 2
+			</li>
+			<li style="background:#39C">
+				content 3
+			</li>
+			<li>
+				content 4
+			</li>
+			<li style="background:#396">
+				content 5
+			</li>
+			<li>
+				content 6
+			</li>
+			<li style="background:#396">
+				content 7
+			</li>
+			<li style="background:#39C">
+				content 8
+			</li>
+			<li>
+				content 9
+			</li>
+			<li style="background:#396">
+				content 10
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="btn_area">
+	<button type="button" class="btn_prev">prev</button>
+	<button type="button" class="btn_next">next</button>
+</div>
+
+<h2>10: rolling, flexible, side-margin</h2>
+<div class="touchSlider10_wrap">
+	<div id="touchSlider10">
+		<ul>
+			<li>
+				content 1
+			</li>
+			<li style="background:#396">
+				content 2
+			</li>
+			<li style="background:#39C">
+				content 3
+			</li>
+			<li>
+				content 4
+			</li>
+			<li style="background:#396">
+				content 5
+			</li>
+			<li>
+				content 6
+			</li>
+			<li style="background:#396">
+				content 7
+			</li>
+			<li style="background:#39C">
+				content 8
+			</li>
+			<li>
+				content 9
+			</li>
+			<li style="background:#396">
+				content 10
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="btn_area">
+	<button type="button" class="btn_prev">prev</button>
+	<button type="button" class="btn_next">next</button>
+</div>
+
+<br /><br /><br /><br /><br /><br />
+</body>
+</html>
