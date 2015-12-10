@@ -67,7 +67,6 @@ h2 { margin-top:10px; text-align:center; }
 $(document).ready(function() {
 	
 	$("#touchSlider").touchSlider({
-		flexible : true,
 		btn_prev : $("#touchSlider").next().find(".btn_prev"),
 		btn_next : $("#touchSlider").next().find(".btn_next"),
 		counter : function (e) {
@@ -97,14 +96,12 @@ $(document).ready(function() {
 	});
 	
 	$("#touchSlider5").touchSlider({
-		flexible : true,
 		view : 5,
 		btn_prev : $("#touchSlider5").next().find(".btn_prev"),
 		btn_next : $("#touchSlider5").next().find(".btn_next")
 	});
 	
 	$("#touchSlider6").touchSlider({
-		flexible : true,
 		initComplete : function (e) {
 			$("#touchSlider6_paging").html("");
 			var num = 1;
@@ -124,7 +121,6 @@ $(document).ready(function() {
 	});
 	
 	$("#touchSlider7").touchSlider({
-		flexible : true,
 		resize : true,
 		btn_prev : $("#touchSlider7").next().find(".btn_prev"),
 		btn_next : $("#touchSlider7").next().find(".btn_next")
@@ -132,7 +128,6 @@ $(document).ready(function() {
 	
 	$("#touchSlider8").touchSlider({
 		roll : false,
-		flexible : true,
 		btn_prev : $(".touchSlider8_wrap").next().find(".btn_prev"),
 		btn_next : $(".touchSlider8_wrap").next().find(".btn_next"),
 		counter : function (e) {
@@ -152,14 +147,12 @@ $(document).ready(function() {
 	});
 	
 	$("#touchSlider9").touchSlider({
-		flexible : true,
 		sidePage : true,
 		btn_prev : $(".touchSlider9_wrap").next().find(".btn_prev"),
 		btn_next : $(".touchSlider9_wrap").next().find(".btn_next")
 	});
 	
 	$("#touchSlider10").touchSlider({
-		flexible : true,
 		sidePage : true,
 		btn_prev : $(".touchSlider10_wrap").next().find(".btn_prev"),
 		btn_next : $(".touchSlider10_wrap").next().find(".btn_next")
@@ -173,6 +166,7 @@ $(document).ready(function() {
 <body>
 <h1>Flick Navigation (jQuery.touchSlider, dohoons)</h1>
 <p>좌우로 터치드래그~ </p>
+<p><a href="https://github.com/dohoons/jquery.touchSlider" target="_blank">https://github.com/dohoons/jquery.touchSlider</a></p>
 
 <h2>1 : rolling, flexible, counter</h2>
 <div id="touchSlider">

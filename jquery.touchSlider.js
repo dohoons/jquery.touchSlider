@@ -2,12 +2,12 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.0.0
+ * @version	1.0.1
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
  *		roll			-	순환 (default true)
- *		flexible		-	유동 레이아웃 (default false)
+ *		flexible		-	유동 레이아웃 (default true)
  *		resize			-	리사이즈 사용 (default false)
  *		view			-	다중 컬럼 (default 1)
  *		speed			-	애니메이션 속도 (default 75)
@@ -24,7 +24,7 @@
  * @example
  
 	$("#target").touchSlider({
-		flexible : true
+		page : 2
 	});
 
 */
@@ -45,7 +45,8 @@
 		
 		settings = jQuery.extend({
 			roll : true,
-			flexible : false,
+			flexible : true,
+			resize : false,
 			btn_prev : null,
 			btn_next : null,
 			paging : null,
@@ -56,7 +57,8 @@
 			sidePage : false,
 			transition : true,
 			initComplete : null,
-			counter : null
+			counter : null,
+			propagation : false
 		}, settings);
 		
 		var opts = [];
@@ -227,6 +229,9 @@
 		},
 		
 		touchstart : function (e) {
+			if(!this.opts.propagation) {
+				e.stopPropagation();
+			}
 			if((e.type == "touchstart" && e.originalEvent.touches.length <= 1) || e.type == "dragstart") {
 				this._startX = e.pageX || e.originalEvent.touches[0].pageX;
 				this._startY = e.pageY || e.originalEvent.touches[0].pageY;
@@ -240,6 +245,9 @@
 		},
 		
 		touchmove : function (e) {
+			if(!this.opts.propagation) {
+				e.stopPropagation();
+			}
 			if((e.type == "touchmove" && e.originalEvent.touches.length <= 1) || e.type == "drag") {
 				this._left = (e.pageX || e.originalEvent.touches[0].pageX) - this._startX;
 				this._top = (e.pageY || e.originalEvent.touches[0].pageY) - this._startY;
@@ -252,11 +260,7 @@
 					this._link = true;
 					this._scroll = true;
 				} else {
-					if ( navigator.userAgent.indexOf("android 4.1") > -1 ) {
-						e.stopPropagation();
-					} else {
-						e.preventDefault();
-					}
+					e.preventDefault();
 					this._drag = true;
 					this._link = false;
 					this._scroll = false;
@@ -278,6 +282,9 @@
 		},
 		
 		touchend : function (e) {
+			if(!this.opts.propagation) {
+				e.stopPropagation();
+			}
 			if((e.type == "touchend" && e.originalEvent.touches.length < 1) || e.type == "dragend") {
 				if(this._scroll) {
 					this._drag = false;
