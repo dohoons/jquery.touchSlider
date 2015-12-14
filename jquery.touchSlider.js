@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.0.1
+ * @version	1.0.2
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -285,7 +285,7 @@
 			if(!this.opts.propagation) {
 				e.stopPropagation();
 			}
-			if((e.type == "touchend" && e.originalEvent.touches.length < 1) || e.type == "dragend") {
+			if((e.type == "touchend") || e.type == "dragend") {
 				if(this._scroll) {
 					this._drag = false;
 					this._link = true;
