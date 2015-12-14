@@ -287,23 +287,22 @@
 			if(!this.opts.propagation) {
 				e.stopPropagation();
 			}
-			if(e.type == "touchend" || e.type == "dragend") {
-				if(this._scroll) {
-					this._drag = false;
-					this._link = true;
-					this._scroll = false;
-					return false;
-				}
-				
-				this.animate(this.direction());
+			
+			if(this._scroll) {
 				this._drag = false;
-				this._scroll = true;
-				
-				var _this = this;
-				setTimeout(function () {
-					_this._link = true;
-				},50);
+				this._link = true;
+				this._scroll = false;
+				return false;
 			}
+			
+			this.animate(this.direction());
+			this._drag = false;
+			this._scroll = true;
+			
+			var _this = this;
+			setTimeout(function () {
+				_this._link = true;
+			},50);
 		},
 		
 		position : function (d) { 
