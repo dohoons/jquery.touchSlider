@@ -286,7 +286,6 @@
 				e.stopPropagation();
 			}
 			if((e.type == "touchend") || e.type == "dragend") {
-				console.log(e.currentTarget);
 				if(this._scroll) {
 					this._drag = false;
 					this._link = true;
