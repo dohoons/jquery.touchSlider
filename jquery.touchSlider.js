@@ -286,6 +286,7 @@
 				e.stopPropagation();
 			}
 			if((e.type == "touchend") || e.type == "dragend") {
+				console.log(e.currentTarget);
 				if(this._scroll) {
 					this._drag = false;
 					this._link = true;
@@ -389,25 +390,22 @@
 				if(this._left == 0 || (!this.opts.roll && this.limit_chk()) ) gap = 0;
 				
 				this._list.each(function (i, el) {
-					var list = $(this);
 					_this._pos[i] = _this._start[i] + gap;
 					
 					if(_this.opts.supportsCssTransitions && _this.opts.transition) {
 						var transition = speed + "ms";
 						var transform = "translate3d(" + _this._pos[i] + "px,0,0)";
-						setTimeout(function () {
-							list.css({
-								"left" : "0",
-								"-moz-transition" : transition,
-								"-moz-transform" : transform,
-								"-ms-transition" : transition,
-								"-ms-transform" : transform,
-								"-webkit-transition" : transition,
-								"-webkit-transform" : transform,
-								"transition" : transition,
-								"transform" : transform
-							});
-						},10);
+						$(this).css({
+							"left" : "0",
+							"-moz-transition" : transition,
+							"-moz-transform" : transform,
+							"-ms-transition" : transition,
+							"-ms-transform" : transform,
+							"-webkit-transition" : transition,
+							"-webkit-transform" : transform,
+							"transition" : transition,
+							"transform" : transform
+						});
 					} else {
 						$(this).stop().animate({"left": _this._pos[i] + "px"}, speed);
 					}
