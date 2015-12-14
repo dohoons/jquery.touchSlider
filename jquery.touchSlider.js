@@ -108,12 +108,14 @@
 					.unbind("touchstart", this.touchstart)
 					.unbind("touchmove", this.touchmove)
 					.unbind("touchend", this.touchend)
+					.unbind("touchcancel", this.touchend)
 					.unbind("dragstart", this.touchstart)
 					.unbind("drag", this.touchmove)
 					.unbind("dragend", this.touchend)
 					.bind("touchstart", this.touchstart)
 					.bind("touchmove", this.touchmove)
 					.bind("touchend", this.touchend)
+					.bind("touchcancel", this.touchend)
 					.bind("dragstart", this.touchstart)
 					.bind("drag", this.touchmove)
 					.bind("dragend", this.touchend)
@@ -285,7 +287,7 @@
 			if(!this.opts.propagation) {
 				e.stopPropagation();
 			}
-			if((e.type == "touchend") || e.type == "dragend") {
+			if(e.type == "touchend" || e.type == "dragend") {
 				if(this._scroll) {
 					this._drag = false;
 					this._link = true;
