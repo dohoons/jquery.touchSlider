@@ -129,7 +129,7 @@
 			
 			if(this.opts.roll) {
 				if(this._len % this._view > 0) {
-					var blank = $(document.createElement(this._list.eq(0).eq(0).prop("tagName"))).hide();
+					var blank = $(document.createElement(this._list.eq(0).prop("tagName"))).hide();
 					var cnt = this._view - (this._len % this._view);
 					for(var i=0; i<cnt; ++i) {
 						this._list.parent().append(blank.clone());
