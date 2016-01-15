@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.0.2
+ * @version	1.0.3
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -231,9 +231,6 @@
 		},
 		
 		touchstart : function (e) {
-			if(!this.opts.propagation) {
-				e.stopPropagation();
-			}
 			if((e.type == "touchstart" && e.originalEvent.touches.length <= 1) || e.type == "dragstart") {
 				this._startX = e.pageX || e.originalEvent.touches[0].pageX;
 				this._startY = e.pageY || e.originalEvent.touches[0].pageY;
@@ -247,9 +244,6 @@
 		},
 		
 		touchmove : function (e) {
-			if(!this.opts.propagation) {
-				e.stopPropagation();
-			}
 			if((e.type == "touchmove" && e.originalEvent.touches.length <= 1) || e.type == "drag") {
 				this._left = (e.pageX || e.originalEvent.touches[0].pageX) - this._startX;
 				this._top = (e.pageY || e.originalEvent.touches[0].pageY) - this._startY;
@@ -262,7 +256,11 @@
 					this._link = true;
 					this._scroll = true;
 				} else {
-					e.preventDefault();
+					if ( navigator.userAgent.indexOf("android 4.1") > -1 ) {
+						e.stopPropagation();
+					} else {
+						e.preventDefault();
+					}
 					this._drag = true;
 					this._link = false;
 					this._scroll = false;
@@ -284,10 +282,6 @@
 		},
 		
 		touchend : function (e) {
-			if(!this.opts.propagation) {
-				e.stopPropagation();
-			}
-			
 			if(this._scroll) {
 				this._drag = false;
 				this._link = true;
