@@ -18,7 +18,7 @@
  *		btn_next		-	next 버튼 (jQuery Object, default null)
  *		paging			-	page 버튼 (jQuery Object, default null)
  *		sidePage		-	사이드 페이지 사용 (default false)
- *		initComplete	-	초기화 콜백
+ *		initComplete 	-	초기화 콜백
  *		counter			-	슬라이드 콜백, 카운터
  *
  * @example
@@ -50,7 +50,7 @@
 			btn_prev : null,
 			btn_next : null,
 			paging : null,
-			speed : 75,
+			speed : 150,
 			view : 1,
 			range : 0.15,
 			page : 1,
@@ -387,9 +387,9 @@
 					_this._pos[i] = _this._start[i] + gap;
 					
 					if(_this.opts.supportsCssTransitions && _this.opts.transition) {
-						var transition = speed + "ms";
+						var transition = speed + "ms ease";
 						var transform = "translate3d(" + _this._pos[i] + "px,0,0)";
-						$(this).css({
+						$(el).css({
 							"left" : "0",
 							"-moz-transition" : transition,
 							"-moz-transform" : transform,
