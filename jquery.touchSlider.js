@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.0.4
+ * @version	1.0.5
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -20,6 +20,7 @@
  *		sidePage		-	사이드 페이지 사용 (default false)
  *		initComplete 	-	초기화 콜백
  *		counter			-	슬라이드 콜백, 카운터
+ *		autoplay		-	자동움직임 관련 옵션 (Object)
  *
  * @example
  
@@ -33,17 +34,7 @@
 	
 	$.fn.touchSlider = function (settings) {
 		
-		settings.supportsCssTransitions = (function (style) {
-			var prefixes = ['Webkit','Moz','Ms'];
-			for(var i=0, l=prefixes.length; i < l; i++ ) {
-				if( typeof style[prefixes[i] + 'Transition'] !== 'undefined') {
-					return true;
-				}
-			}
-			return false;
-		})(document.createElement('div').style);
-		
-		settings = jQuery.extend({
+		$.fn.touchSlider.defaults = {
 			roll : true,
 			flexible : true,
 			resize : false,
@@ -58,11 +49,25 @@
 			transition : true,
 			initComplete : null,
 			counter : null,
-			propagation : false
-		}, settings);
+			propagation : false,
+			autoplay : {
+				enable : false,
+				pauseHover : true,
+				addHoverTarget : "",
+				interval : 3500
+			},
+			supportsCssTransitions : (function (style) {
+				var prefixes = ['Webkit','Moz','Ms'];
+				for(var i=0, l=prefixes.length; i < l; i++ ) {
+					if( typeof style[prefixes[i] + 'Transition'] !== 'undefined') {
+						return true;
+					}
+				}
+				return false;
+			})(document.createElement('div').style)
+		};
 		
-		var opts = [];
-		opts = $.extend({}, $.fn.touchSlider.defaults, settings);
+		var opts = $.extend(true, {}, $.fn.touchSlider.defaults, settings);
 		
 		return this.each(function () {
 			
@@ -103,6 +108,8 @@
 			this._scroll = false;
 			this._btn_prev;
 			this._btn_next;
+			this._timer;
+			this._hover_tg = [];
 			
 			$(this)
 					.unbind("touchstart", this.touchstart)
@@ -182,6 +189,35 @@
 				});
 				
 				this.opts.paging.remove();
+			}
+			
+			if(this.opts.autoplay.enable) {
+				this._hover_tg = [];
+				this._hover_tg.push(this._tg);
+				
+				if(this.opts.btn_prev && this.opts.btn_next) {
+					this._hover_tg.push(this.opts.btn_prev);
+					this._hover_tg.push(this.opts.btn_next);
+				}
+				
+				if(this.opts.autoplay.addHoverTarget != "") {
+					this._hover_tg.push($(this.opts.autoplay.addHoverTarget));
+				}
+				
+				if(this.opts.autoplay.pauseHover) {
+					$(this._hover_tg).each(function(i, el) {
+						$(this).unbind("mouseenter mouseleave").bind("mouseenter mouseleave", function (e) {
+							if(e.type == "mouseenter") {
+								_this.autoStop();
+							} else {
+								_this.autoPlay();
+							}
+						});
+					});
+				}
+				
+				this.autoStop();
+				this.autoPlay();
 			}
 			
 			this._tg.find("a").live("click", function (e) {
@@ -465,6 +501,22 @@
 			if(typeof(this.opts.counter) == "function") {
 				this.opts.counter.call(this, this.get_page());
 			}
+		},
+		
+		autoPlay : function () {
+			var _this = this;
+			this._timer = setInterval(function () {
+				var page = _this.get_page();
+				if(page.current == page.total) {
+					_this.go_page(0);
+				} else {
+					_this.animate(-1, true);
+				}
+			}, this.opts.autoplay.interval);
+		},
+		
+		autoStop : function () {
+			clearInterval(this._timer);
 		}
 		
 	};
