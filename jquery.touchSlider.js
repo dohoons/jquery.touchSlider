@@ -506,17 +506,31 @@
 		autoPlay : function () {
 			var _this = this;
 			this._timer = setInterval(function () {
-				var page = _this.get_page();
-				if(page.current == page.total) {
-					_this.go_page(0);
-				} else {
-					_this.animate(-1, true);
+				if(_this.opts.autoplay.enable) {
+					var page = _this.get_page();
+					if(page.current == page.total) {
+						_this.go_page(0);
+					} else {
+						_this.animate(-1, true);
+					}
 				}
 			}, this.opts.autoplay.interval);
 		},
 		
 		autoStop : function () {
 			clearInterval(this._timer);
+		},
+		
+		autoPauseToggle : function () {
+			if(this.opts.autoplay.enable) {
+				this.autoStop();
+				this.opts.autoplay.enable = false;
+				return "stopped";
+			} else {
+				this.opts.autoplay.enable = true;
+				this.autoPlay();
+				return "started";
+			}
 		}
 		
 	};
