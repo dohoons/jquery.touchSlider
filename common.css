@@ -1,8 +1,8 @@
-@charset "euc-kr";
+@charset "utf-8";
 
 /* Basic Style START (dohoons, 200803, 200908, 201011, 201106, 201305) */
 html, body { height:100%; -webkit-text-size-adjust:none; }
-body, input, select, button, textarea, h1, h2, h3, h4, h5, h6, table { font:normal 12px/1.5 dotum,"µ∏øÚ",Arial,AppleGothic,Sans-serif; color:#666; }
+body, input, select, button, textarea, h1, h2, h3, h4, h5, h6, table { font:normal 12px/1.5 dotum,"ÎèãÏõÄ",Arial,AppleGothic,Sans-serif; color:#666; }
 html, body, div, form, input, select, button, textarea, legend, fieldset, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, blockquote, address, p, th, td, caption { margin:0; padding:0; }
 ol, ul, li { list-style:none; }
 img, fieldset { border:0 none; }
