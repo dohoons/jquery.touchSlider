@@ -111,21 +111,25 @@
 			this._timer;
 			this._hover_tg = [];
 			
-			$(this)
-					.off("touchstart", this.touchstart)
-					.off("touchmove", this.touchmove)
-					.off("touchend", this.touchend)
-					.off("touchcancel", this.touchend)
-					.off("dragstart", this.touchstart)
-					.off("drag", this.touchmove)
-					.off("dragend", this.touchend)
-					.on("touchstart", this.touchstart)
-					.on("touchmove", this.touchmove)
-					.on("touchend", this.touchend)
-					.on("touchcancel", this.touchend)
-					.on("dragstart", this.touchstart)
-					.on("drag", this.touchmove)
-					.on("dragend", this.touchend);
+			if($.event.special.dragstart) {
+				this._tg
+						.off("dragstart", this.touchstart)
+						.off("drag", this.touchmove)
+						.off("dragend", this.touchend)
+						.on("dragstart", this.touchstart)
+						.on("drag", this.touchmove)
+						.on("dragend", this.touchend);
+			} else {
+				this._tg
+						.off("touchstart", this.touchstart)
+						.off("touchmove", this.touchmove)
+						.off("touchend", this.touchend)
+						.off("touchcancel", this.touchend)
+						.on("touchstart", this.touchstart)
+						.on("touchmove", this.touchmove)
+						.on("touchend", this.touchend)
+						.on("touchcancel", this.touchend);
+			}
 			
 			$(this).children().css({
 				"width":this._width + "px",
@@ -289,6 +293,7 @@
 			if((e.type == "touchmove" && e.originalEvent.touches.length <= 1) || e.type == "drag") {
 				this._left = (e.pageX || e.originalEvent.touches[0].pageX) - this._startX;
 				this._top = (e.pageY || e.originalEvent.touches[0].pageY) - this._startY;
+				
 				var w = this._left < 0 ? this._left * -1 : this._left;
 				var h = this._top < 0 ? this._top * -1 : this._top;
 				
@@ -421,6 +426,7 @@
 				if(btn_click) this.position(d);
 				
 				var gap = d * (this._item_w * this._view);
+				
 				if(this._left == 0 || (!this.opts.roll && this.limit_chk()) ) gap = 0;
 				
 				this._list.each(function (i, el) {
