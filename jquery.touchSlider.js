@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.1.0
+ * @version	1.0.5
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -77,7 +77,7 @@
 			this.opts = opts;
 			this.init();
 			
-			$(window).on("orientationchange resize", function () {
+			$(window).bind("orientationchange resize", function () {
 				_this.resize(_this);
 			});
 		});
@@ -111,25 +111,21 @@
 			this._timer;
 			this._hover_tg = [];
 			
-			if($.event.special.dragstart) {
-				this._tg
-						.off("dragstart", this.touchstart)
-						.off("drag", this.touchmove)
-						.off("dragend", this.touchend)
-						.on("dragstart", this.touchstart)
-						.on("drag", this.touchmove)
-						.on("dragend", this.touchend);
-			} else {
-				this._tg
-						.off("touchstart", this.touchstart)
-						.off("touchmove", this.touchmove)
-						.off("touchend", this.touchend)
-						.off("touchcancel", this.touchend)
-						.on("touchstart", this.touchstart)
-						.on("touchmove", this.touchmove)
-						.on("touchend", this.touchend)
-						.on("touchcancel", this.touchend);
-			}
+			$(this)
+					.unbind("touchstart", this.touchstart)
+					.unbind("touchmove", this.touchmove)
+					.unbind("touchend", this.touchend)
+					.unbind("touchcancel", this.touchend)
+					.unbind("dragstart", this.touchstart)
+					.unbind("drag", this.touchmove)
+					.unbind("dragend", this.touchend)
+					.bind("touchstart", this.touchstart)
+					.bind("touchmove", this.touchmove)
+					.bind("touchend", this.touchend)
+					.bind("touchcancel", this.touchend)
+					.bind("dragstart", this.touchstart)
+					.bind("drag", this.touchmove)
+					.bind("dragend", this.touchend)
 			
 			$(this).children().css({
 				"width":this._width + "px",
@@ -171,11 +167,11 @@
 			}
 			
 			if(this.opts.btn_prev && this.opts.btn_next) {
-				this.opts.btn_prev.off("click").on("click", function() {
+				this.opts.btn_prev.unbind("click").bind("click", function() {
 					_this.animate(1, true);
 					return false;
 				})
-				this.opts.btn_next.off("click").on("click", function() {
+				this.opts.btn_next.unbind("click").bind("click", function() {
 					_this.animate(-1, true);
 					return false;
 				});
@@ -186,7 +182,7 @@
 					var btn_page = _this.opts.paging.eq(0).clone();
 					_this.opts.paging.before(btn_page);
 					
-					btn_page.on("click", function(e) {
+					btn_page.bind("click", function(e) {
 						_this.go_page(i, e);
 						return false;
 					});
@@ -210,7 +206,7 @@
 				
 				if(this.opts.autoplay.pauseHover) {
 					$(this._hover_tg).each(function(i, el) {
-						$(this).off("mouseenter mouseleave").on("mouseenter mouseleave", function (e) {
+						$(this).unbind("mouseenter mouseleave").bind("mouseenter mouseleave", function (e) {
 							if(e.type == "mouseenter") {
 								_this.autoStop();
 							} else {
@@ -224,7 +220,7 @@
 				this.autoPlay();
 			}
 			
-			this._tg.find("a").on("click", function (e) {
+			this._tg.find("a").live("click", function (e) {
 				if(!_this._link) {
 					return false;
 				}
@@ -293,7 +289,6 @@
 			if((e.type == "touchmove" && e.originalEvent.touches.length <= 1) || e.type == "drag") {
 				this._left = (e.pageX || e.originalEvent.touches[0].pageX) - this._startX;
 				this._top = (e.pageY || e.originalEvent.touches[0].pageY) - this._startY;
-				
 				var w = this._left < 0 ? this._left * -1 : this._left;
 				var h = this._top < 0 ? this._top * -1 : this._top;
 				
@@ -426,7 +421,6 @@
 				if(btn_click) this.position(d);
 				
 				var gap = d * (this._item_w * this._view);
-				
 				if(this._left == 0 || (!this.opts.roll && this.limit_chk()) ) gap = 0;
 				
 				this._list.each(function (i, el) {
