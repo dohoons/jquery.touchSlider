@@ -1,0 +1,19 @@
+{
+	"name": "jquery.touchSlider",
+	"version": "1.1.0",
+	"homepage": "https://github.com/dohoons/jquery.touchSlider",
+	"authors": [
+		"dohoons@gmail.com"
+	],
+	"description": "jquery flick navigation",
+	"keywords": [
+		"javascript",
+		"jQuery",
+		"flick",
+		"swipe"
+	],
+	"license": "MIT",
+	"dependencies": {
+		"jquery": "1.7.0 - 2.2.x"
+	}
+}
