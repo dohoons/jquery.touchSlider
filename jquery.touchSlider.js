@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.1.0
+ * @version	1.1.1
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -111,7 +111,7 @@
 			this._timer;
 			this._hover_tg = [];
 			
-			$(this)
+			this._tg
 					.off("touchstart", this.touchstart)
 					.off("touchmove", this.touchmove)
 					.off("touchend", this.touchend)
@@ -127,7 +127,7 @@
 					.on("drag", this.touchmove)
 					.on("dragend", this.touchend);
 			
-			$(this).children().css({
+			this._tg.children().css({
 				"width":this._width + "px",
 				"overflow":"visible"
 			});
@@ -149,7 +149,7 @@
 			
 			var page_gap = (this.opts.page > 1 && this.opts.page <= this._len) ? (this.opts.page - 1) * this._item_w * this._view : 0;
 			
-			for(var i=0; i<this._len; ++i) {
+			for(var i=0, len=this._len; i<len; ++i) {
 				this._pos[i] = this._item_w * i - page_gap;
 				this._start[i] = this._pos[i];
 				this._list.eq(i).css({
@@ -182,7 +182,7 @@
 					var btn_page = _this.opts.paging.eq(0).clone();
 					_this.opts.paging.before(btn_page);
 					
-					btn_page.on("click", function(e) {
+					btn_page.off("click").on("click", function(e) {
 						_this.go_page(i, e);
 						return false;
 					});
@@ -220,7 +220,7 @@
 				this.autoPlay();
 			}
 			
-			this._tg.find("a").on("click", function (e) {
+			this._tg.find("a").off("click").on("click", function (e) {
 				if(!_this._link) {
 					return false;
 				}
@@ -248,7 +248,7 @@
 				e._item_w = e._width / e._view;
 				e._range = e.opts.range * e._width;
 				
-				for(var i=0; i<e._len; ++i) {
+				for(var i=0, len=e._len; i<len; ++i) {
 					e._pos[i] = e._pos[i] / tmp_w * e._item_w;
 					e._start[i] = e._start[i] / tmp_w * e._item_w;
 					e._list.eq(i).css({
@@ -274,11 +274,7 @@
 				this._startX = e.pageX || e.originalEvent.touches[0].pageX;
 				this._startY = e.pageY || e.originalEvent.touches[0].pageY;
 				this._scroll = false;
-				
-				this._start = [];
-				for(var i=0; i<this._len; ++i) {
-					this._start[i] = this._pos[i];
-				}
+				this._start = this._pos.slice(0);
 			}
 		},
 		
@@ -305,7 +301,7 @@
 					this.position(e);
 				}
 				
-				for(var i=0; i<this._len; ++i) {
+				for(var i=0, len=this._len; i<len; ++i) {
 					var tmp = this._start[i] + this._left;
 					
 					this.move({
@@ -340,14 +336,13 @@
 		},
 		
 		position : function (d) { 
-			var gap = this._view * this._item_w;
+			var len = this._len,
+				view = this._view,
+				gap = view * this._item_w;
 			
 			if(d == -1 || d == 1) {
 				this._startX = 0;
-				this._start = [];
-				for(var i=0; i<this._len; ++i) {
-					this._start[i] = this._pos[i];
-				}
+				this._start = this._pos.slice(0);
 				this._left = d * gap;
 			} else {
 				if(this._left > gap) this._left = gap;
@@ -355,22 +350,16 @@
 			}
 			
 			if(this.opts.roll) {
-				var tmp_pos = [];
-				
-				for(var i=0; i<this._len; ++i) {
-					tmp_pos[i] = this._pos[i];
-				}
-				tmp_pos.sort(function(a,b){return a-b;});
-				
-				var max_chk = tmp_pos[this._len-this._view];
-				var p_min = $.inArray(tmp_pos[0], this._pos);
-				var p_max = $.inArray(max_chk, this._pos);
-				
-				var p = (this.opts.sidePage) ? 3 : 1;
-				if(this._view <= 1) max_chk = this._len - p;
+				var tmp_pos = this._pos.slice(0).sort(function(a,b){return a-b;}),
+					max_chk = tmp_pos[len-view],
+					p_min = $.inArray(tmp_pos[0], this._pos),
+					p_max = $.inArray(max_chk, this._pos),
+					p = (this.opts.sidePage) ? 3 : 1;
+
+				if(view <= 1) max_chk = len - p;
 				
 				if((d == 1 && tmp_pos[p-1] >= 0) || (this._drag && tmp_pos[p-1] > 0)) {
-					for(var i=0; i<this._view; ++i, ++p_min, ++p_max) {
+					for(var i=0; i<view; ++i, ++p_min, ++p_max) {
 						this._start[p_max] = this._start[p_min] - gap;
 						this.move({
 							tg : this._list.eq(p_max),
@@ -379,7 +368,7 @@
 						});
 					}
 				} else if((d == -1 && tmp_pos[max_chk] <= 0) || (this._drag && tmp_pos[max_chk] <= 0)) {
-					for(var i=0; i<this._view; ++i, ++p_min, ++p_max) {
+					for(var i=0; i<view; ++i, ++p_min, ++p_max) {
 						this._start[p_min] = this._start[p_max] + gap;
 						this.move({
 							tg : this._list.eq(p_min),
@@ -394,8 +383,8 @@
 		},
 		
 		move : function (obj) {
-			var transition = obj.speed + "ms";
-			var transform = "translate3d(" + obj.to + "px,0,0)";
+			var transition = obj.speed + "ms",
+				transform = "translate3d(" + obj.to + "px,0,0)";
 			if(this.opts.supportsCssTransitions && this.opts.transition) {
 				obj.tg.css({
 					"left" : "0",
@@ -415,21 +404,23 @@
 		
 		animate : function (d, btn_click, speed) {
 			if(this._drag || !this._scroll || btn_click) {
-				var _this = this;
-				var speed = (speed > -1) ? speed : this._speed;
+				var speed = (speed > -1) ? speed : this._speed,
+					gap = d * (this._item_w * this._view),
+					list = this._list,
+					len = this._len,
+					transition = speed + "ms ease",
+					transform = "";
 				
 				if(btn_click) this.position(d);
 				
-				var gap = d * (this._item_w * this._view);
 				if(this._left == 0 || (!this.opts.roll && this.limit_chk()) ) gap = 0;
-				
-				this._list.each(function (i, el) {
-					_this._pos[i] = _this._start[i] + gap;
-					
-					if(_this.opts.supportsCssTransitions && _this.opts.transition) {
-						var transition = speed + "ms ease";
-						var transform = "translate3d(" + _this._pos[i] + "px,0,0)";
-						$(el).css({
+
+				for(var i=0; i<len; ++i) {
+					this._pos[i] = this._start[i] + gap;
+
+					if(this.opts.supportsCssTransitions && this.opts.transition) {
+						transform = "translate3d(" + this._pos[i] + "px,0,0)";
+						list.eq(i).css({
 							"left" : "0",
 							"-moz-transition" : transition,
 							"-moz-transform" : transform,
@@ -441,9 +432,9 @@
 							"transform" : transform
 						});
 					} else {
-						$(this).stop().animate({"left": _this._pos[i] + "px"}, speed);
+						list.eq(i).stop().animate({"left": this._pos[i] + "px"}, speed);
 					}
-				});			
+				}	
 				
 				this.counter();
 			}
