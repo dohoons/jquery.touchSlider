@@ -116,12 +116,13 @@ $(document).ready(function() {
 	$("#touchSlider6").touchSlider({
 		initComplete : function (e) {
 			var _this = this;
-			var paging = $(this).next(".paging");
+			var $this = $(this);
+			var paging = $this.next(".paging");
 			
 			paging.html("");
-			$(this).find(" > ul > li").each(function (i, el) {
-				var num = (i+1) / e._view;
-				if((i+1) % e._view == 0) {
+			$this.find(" > ul > li").each(function (i, el) {
+				var num = (i+1) / _this._view;
+				if((i+1) % _this._view == 0) {
 					paging.append('<button type="button" class="btn_page">page' + num + '</button>');
 				}
 			});
@@ -145,9 +146,9 @@ $(document).ready(function() {
 		btn_prev : $(".touchSlider8_wrap").next().find(".btn_prev"),
 		btn_next : $(".touchSlider8_wrap").next().find(".btn_next"),
 		counter : function (e) {
-			var _this = $(this);
-			var list_wrap = _this.children();
-			var gap = _this.parent().width() - _this.get(0)._item_w;
+			var $this = $(this);
+			var list_wrap = $this.children();
+			var gap = $this.parent().width() - this._item_w;
 			if(e.current == e.total && e.total > 1) {
 				list_wrap.css({
 					left: gap+"px"
