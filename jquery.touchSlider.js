@@ -70,9 +70,16 @@
 		var opts = $.extend(true, {}, $.fn.touchSlider.defaults, settings);
 		
 		return this.each(function () {
+			
+			var _this = this;
+
 			$.fn.extend(this, touchSlider);
 			this.opts = opts;
 			this.init();
+			
+			$(window).on("orientationchange resize", function () {
+				_this.resize(_this);
+			});
 		});
 	
 	};
@@ -119,10 +126,6 @@
 					.on("dragstart", this.touchstart)
 					.on("drag", this.touchmove)
 					.on("dragend", this.touchend);
-
-			$(window)
-					.off("orientationchange resize")
-					.on("orientationchange resize", this, this.resize);
 
 			this._tg.children().css({
 				"width":this._width + "px",
@@ -238,30 +241,33 @@
 		},
 		
 		resize : function (e) {
-			var obj = e.data;
-			if(obj.opts.flexible) {
-				var tmp_w = obj._item_w;
+			if(e.opts.flexible) {
+				var tmp_w = e._item_w;
 				
-				obj._width = parseInt(obj._tg.css("width"));
-				obj._item_w = obj._width / obj._view;
-				obj._range = obj.opts.range * obj._width;
+				e._width = parseInt(e._tg.css("width"));
+				e._item_w = e._width / e._view;
+				e._range = e.opts.range * e._width;
 				
-				for(var i=0, len=obj._len; i<len; ++i) {
-					obj._pos[i] = obj._pos[i] / tmp_w * obj._item_w;
-					obj._start[i] = obj._start[i] / tmp_w * obj._item_w;
-					obj._list.eq(i).css({
-						"width" : obj._item_w + "px"
-					});
+				e._list.css({
+					"width" : e._item_w + "px"
+				});
+				e._list.parent().css({
+					"width" : e._item_w + "px"
+				});
+
+				for(var i=0, len=e._len; i<len; ++i) {
+					e._pos[i] = e._pos[i] / tmp_w * e._item_w;
+					e._start[i] = e._start[i] / tmp_w * e._item_w;
 					
-					obj.move({
-						tg : obj._list.eq(i),
+					this.move({
+						tg : e._list.eq(i),
 						speed : 0,
-						to : obj._pos[i]
+						to : e._pos[i]
 					});
 				}
 			}
 			
-			obj.counter();
+			this.counter();
 		},
 		
 		touchstart : function (e) {
