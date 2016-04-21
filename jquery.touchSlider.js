@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.1.2
+ * @version	1.1.3
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -161,7 +161,6 @@
 					
 				this.move({
 					tg : this._list.eq(i),
-					speed : 0,
 					to : this._pos[i]
 				});
 			}
@@ -261,7 +260,6 @@
 					
 					this.move({
 						tg : e._list.eq(i),
-						speed : 0,
 						to : e._pos[i]
 					});
 				}
@@ -310,7 +308,6 @@
 					
 					this.move({
 						tg : this._list.eq(i),
-						speed : 0,
 						to : tmp
 					});
 					
@@ -367,7 +364,6 @@
 						this._start[p_max] = this._start[p_min] - gap;
 						this.move({
 							tg : this._list.eq(p_max),
-							speed : 0,
 							to : this._start[p_max]
 						});
 					}
@@ -376,7 +372,6 @@
 						this._start[p_min] = this._start[p_max] + gap;
 						this.move({
 							tg : this._list.eq(p_min),
-							speed : 0,
 							to : this._start[p_min]
 						});
 					}
@@ -387,7 +382,7 @@
 		},
 		
 		move : function (obj) {
-			var transition = obj.speed + "ms",
+			var transition = "none",
 				transform = "translate3d(" + obj.to + "px,0,0)";
 			if(this.opts.supportsCssTransitions && this.opts.transition) {
 				obj.tg.css({
@@ -416,29 +411,36 @@
 					transform = "";
 				
 				if(btn_click) this.position(d);
-				
 				if(this._left == 0 || (!this.opts.roll && this.limit_chk()) ) gap = 0;
 
-				for(var i=0; i<len; ++i) {
-					this._pos[i] = this._start[i] + gap;
-
-					if(this.opts.supportsCssTransitions && this.opts.transition) {
-						transform = "translate3d(" + this._pos[i] + "px,0,0)";
-						list.eq(i).css({
-							"left" : "0",
-							"-moz-transition" : transition,
-							"-moz-transform" : transform,
-							"-ms-transition" : transition,
-							"-ms-transform" : transform,
-							"-webkit-transition" : transition,
-							"-webkit-transform" : transform,
-							"transition" : transition,
-							"transform" : transform
-						});
-					} else {
-						list.eq(i).stop().animate({"left": this._pos[i] + "px"}, speed);
+				if(this.opts.supportsCssTransitions && this.opts.transition) {
+					for(var i=0; i<len; ++i) {
+						this._pos[i] = this._start[i] + gap;
+						(function (_this, i) {
+							setTimeout(function () {
+								transform = "translate3d(" + _this._pos[i] + "px,0,0)";
+								list.eq(i)
+									.css({
+										"left" : "0",
+										"-moz-transition" : transition,
+										"-moz-transform" : transform,
+										"-ms-transition" : transition,
+										"-ms-transform" : transform,
+										"-webkit-transition" : transition,
+										"-webkit-transform" : transform,
+										"transition" : transition,
+										"transform" : transform
+									});
+							},10);
+						})(this, i);
 					}
-				}	
+				} else {
+					for(var i=0; i<len; ++i) {
+						list.eq(i)
+							.stop()
+							.animate({"left": this._pos[i] + "px"}, speed);
+					}
+				}
 				
 				this.counter();
 			}
