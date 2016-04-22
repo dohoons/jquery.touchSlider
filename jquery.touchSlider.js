@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.1.3
+ * @version	1.1.4
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -30,7 +30,11 @@
 
 */
 
-(function ($) {
+/* global jQuery */
+
+;(function ($) {
+
+	"use strict";
 	
 	$.fn.touchSlider = function (settings) {
 		
@@ -106,10 +110,10 @@
 			this._drag = false;
 			this._link = true;
 			this._scroll = false;
-			this._btn_prev;
-			this._btn_next;
-			this._timer;
 			this._hover_tg = [];
+			this._btn_prev = null;
+			this._btn_next = null;
+			this._timer = null;
 			
 			this._tg
 					.off("touchstart", this.touchstart)
@@ -138,7 +142,7 @@
 				if(this._len % this._view > 0) {
 					var blank = $(document.createElement(this._list.eq(0).prop("tagName"))).hide();
 					var cnt = this._view - (this._len % this._view);
-					for(var i=0; i<cnt; ++i) {
+					for(var j=0; j<cnt; ++j) {
 						this._list.parent().append(blank.clone());
 					}
 				}
@@ -169,7 +173,7 @@
 				this.opts.btn_prev.off("click").on("click", function() {
 					_this.animate(1, true);
 					return false;
-				})
+				});
 				this.opts.btn_next.off("click").on("click", function() {
 					_this.animate(-1, true);
 					return false;
@@ -177,12 +181,12 @@
 			}
 			
 			if(this.opts.paging) {
-				$(this._list).each(function (i, el) {
+				$(this._list).each(function (i) {
 					var btn_page = _this.opts.paging.eq(0).clone();
 					_this.opts.paging.before(btn_page);
 					
-					btn_page.off("click").on("click", function(e) {
-						_this.go_page(i, e);
+					btn_page.off("click").on("click", function() {
+						this.go_page(i);
 						return false;
 					});
 				});
@@ -199,12 +203,12 @@
 					this._hover_tg.push(this.opts.btn_next);
 				}
 				
-				if(this.opts.autoplay.addHoverTarget != "") {
+				if(this.opts.autoplay.addHoverTarget !== "") {
 					this._hover_tg.push($(this.opts.autoplay.addHoverTarget));
 				}
 				
 				if(this.opts.autoplay.pauseHover) {
-					$(this._hover_tg).each(function(i, el) {
+					$(this._hover_tg).each(function() {
 						$(this).off("mouseenter mouseleave").on("mouseenter mouseleave", function (e) {
 							if(e.type == "mouseenter") {
 								_this.autoStop();
@@ -219,7 +223,7 @@
 				this.autoPlay();
 			}
 			
-			this._tg.off("click").on("click", "a", function (e) {
+			this._tg.off("click").on("click", "a", function () {
 				if(!_this._link) {
 					return false;
 				}
@@ -339,7 +343,8 @@
 		position : function (d) { 
 			var len = this._len,
 				view = this._view,
-				gap = view * this._item_w;
+				gap = view * this._item_w,
+				i = 0;
 			
 			if(d == -1 || d == 1) {
 				this._startX = 0;
@@ -360,7 +365,7 @@
 				if(view <= 1) max_chk = len - p;
 				
 				if((d == 1 && tmp_pos[p-1] >= 0) || (this._drag && tmp_pos[p-1] > 0)) {
-					for(var i=0; i<view; ++i, ++p_min, ++p_max) {
+					for(i=0; i<view; ++i, ++p_min, ++p_max) {
 						this._start[p_max] = this._start[p_min] - gap;
 						this.move({
 							tg : this._list.eq(p_max),
@@ -368,7 +373,7 @@
 						});
 					}
 				} else if((d == -1 && tmp_pos[max_chk] <= 0) || (this._drag && tmp_pos[max_chk] <= 0)) {
-					for(var i=0; i<view; ++i, ++p_min, ++p_max) {
+					for(i=0; i<view; ++i, ++p_min, ++p_max) {
 						this._start[p_min] = this._start[p_max] + gap;
 						this.move({
 							tg : this._list.eq(p_min),
@@ -382,10 +387,9 @@
 		},
 		
 		move : function (obj) {
-			var transition = "none",
-				transform = "translate3d(" + obj.to + "px,0,0)";
-			if(this.opts.supportsCssTransitions && this.opts.transition) {
-				obj.tg.css({
+			var transition = (obj.speed !== undefined) ? obj.speed + "ms ease" : "none",
+				transform = "translate3d(" + obj.to + "px,0,0)",
+				transStyle = {
 					"left" : "0",
 					"-moz-transition" : transition,
 					"-moz-transform" : transform,
@@ -395,51 +399,41 @@
 					"-webkit-transform" : transform,
 					"transition" : transition,
 					"transform" : transform
-				});
+				};
+
+			if(this.opts.supportsCssTransitions && this.opts.transition) {
+				if(obj.speed === undefined) {
+					obj.tg.css(transStyle);
+				} else {
+					setTimeout(function () {
+						obj.tg.css(transStyle);
+					}, 10);
+				}
 			} else {
-				obj.tg.css("left", obj.to + "px");
+				if(obj.speed === undefined) {
+					obj.tg.css("left", obj.to + "px");
+				} else {
+					obj.tg.stop().animate({"left": obj.to + "px"}, obj.speed);
+				}
 			}
 		},
 		
-		animate : function (d, btn_click, speed) {
+		animate : function (d, btn_click, spd) {
 			if(this._drag || !this._scroll || btn_click) {
-				var speed = (speed > -1) ? speed : this._speed,
+				var speed = (spd > -1) ? spd : this._speed,
 					gap = d * (this._item_w * this._view),
-					list = this._list,
-					len = this._len,
-					transition = speed + "ms ease",
-					transform = "";
+					list = this._list;
 				
 				if(btn_click) this.position(d);
-				if(this._left == 0 || (!this.opts.roll && this.limit_chk()) ) gap = 0;
+				if(this._left === 0 || (!this.opts.roll && this.limit_chk()) ) gap = 0;
 
-				if(this.opts.supportsCssTransitions && this.opts.transition) {
-					for(var i=0; i<len; ++i) {
-						this._pos[i] = this._start[i] + gap;
-						(function (_this, i) {
-							setTimeout(function () {
-								transform = "translate3d(" + _this._pos[i] + "px,0,0)";
-								list.eq(i)
-									.css({
-										"left" : "0",
-										"-moz-transition" : transition,
-										"-moz-transform" : transform,
-										"-ms-transition" : transition,
-										"-ms-transform" : transform,
-										"-webkit-transition" : transition,
-										"-webkit-transform" : transform,
-										"transition" : transition,
-										"transform" : transform
-									});
-							},10);
-						})(this, i);
-					}
-				} else {
-					for(var i=0; i<len; ++i) {
-						list.eq(i)
-							.stop()
-							.animate({"left": this._pos[i] + "px"}, speed);
-					}
+				for(var i=0, len = this._len; i<len; ++i) {
+					this._pos[i] = this._start[i] + gap;
+					this.move({
+						tg : list.eq(i),
+						to : this._pos[i],
+						speed : speed
+					});
 				}
 				
 				this.counter();
@@ -459,14 +453,14 @@
 		
 		limit_chk : function () {
 			var last_p = parseInt((this._len - 1) / this._view) * this._view;
-			return ( (this._start[0] == 0 && this._left > 0) || (this._start[last_p] == 0 && this._left < 0) );
+			return ( (this._start[0] === 0 && this._left > 0) || (this._start[last_p] === 0 && this._left < 0) );
 		},
 		
-		go_page : function (i, e) {
+		go_page : function (i) {
 			var crt = ($.inArray(0, this._pos) / this._view) + 1;
 			var cal = crt - (i + 1);
 			
-			while(cal != 0) {
+			while(cal !== 0) {
 				if(cal < 0) {
 					this.animate(-1, true);
 					cal++;
@@ -482,7 +476,7 @@
 				obj : this,
 				total : Math.ceil(this._len / this._view),
 				current : ($.inArray(0, this._pos) / this._view) + 1
-			}
+			};
 		},
 		
 		counter : function () {
