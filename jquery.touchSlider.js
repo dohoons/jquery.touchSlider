@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.1.4
+ * @version	1.1.5
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -499,7 +499,7 @@
 			this._timer = setInterval(function () {
 				if(_this.opts.autoplay.enable) {
 					var page = _this.get_page();
-					if(page.current == page.total) {
+					if(page.current == page.total && !_this.opts.roll) {
 						_this.go_page(0);
 					} else {
 						_this.animate(-1, true);
