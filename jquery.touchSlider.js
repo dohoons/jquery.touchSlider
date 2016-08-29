@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.1.5
+ * @version	1.1.6
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -435,8 +435,10 @@
 						speed : speed
 					});
 				}
-				
-				this.counter();
+
+				if(d !== 0) {
+					this.counter();
+				}
 			}
 		},
 		
