@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.1.6
+ * @version	1.1.7
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -41,7 +41,7 @@
 		$.fn.touchSlider.defaults = {
 			roll : true,
 			flexible : true,
-			resize : false,
+			resize : true,
 			btn_prev : null,
 			btn_next : null,
 			paging : null,
@@ -294,7 +294,7 @@
 				var w = this._left < 0 ? this._left * -1 : this._left;
 				var h = this._top < 0 ? this._top * -1 : this._top;
 				
-				if (w < h || this._scroll) {
+				if ((w < h || this._scroll) && !this._drag) {
 					this._left = 0;
 					this._drag = false;
 					this._link = true;
