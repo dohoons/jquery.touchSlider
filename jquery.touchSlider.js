@@ -277,8 +277,8 @@
 				e.stopPropagation();
 			}
 			if((e.type == "touchstart" && e.originalEvent.touches.length <= 1) || e.type == "dragstart") {
-				this._startX = e.pageX || e.originalEvent.touches[0].pageX;
-				this._startY = e.pageY || e.originalEvent.touches[0].pageY;
+				this._startX = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX;
+				this._startY = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : e.pageY;
 				this._scroll = false;
 				this._start = this._pos.slice(0);
 			}
@@ -289,8 +289,8 @@
 				e.stopPropagation();
 			}
 			if((e.type == "touchmove" && e.originalEvent.touches.length <= 1) || e.type == "drag") {
-				this._left = (e.pageX || e.originalEvent.touches[0].pageX) - this._startX;
-				this._top = (e.pageY || e.originalEvent.touches[0].pageY) - this._startY;
+				this._left = (e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX) - this._startX;
+				this._top = (e.originalEvent.touches ? e.originalEvent.touches[0].pageY : e.pageY) - this._startY;
 				var w = this._left < 0 ? this._left * -1 : this._left;
 				var h = this._top < 0 ? this._top * -1 : this._top;
 				
