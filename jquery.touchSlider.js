@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.1.7
+ * @version	1.1.8
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -60,15 +60,7 @@
 				addHoverTarget : "",
 				interval : 3500
 			},
-			supportsCssTransitions : (function (style) {
-				var prefixes = ['Webkit','Moz','Ms'];
-				for(var i=0, l=prefixes.length; i < l; i++ ) {
-					if( typeof style[prefixes[i] + 'Transition'] !== 'undefined') {
-						return true;
-					}
-				}
-				return false;
-			})(document.createElement('div').style)
+			supportsCssTransitions : 'transition' in document.documentElement.style || 'WebkitTransition' in document.documentElement.style
 		};
 		
 		var opts = $.extend(true, {}, $.fn.touchSlider.defaults, settings);
