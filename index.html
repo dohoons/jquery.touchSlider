@@ -118,14 +118,13 @@ $(document).ready(function() {
 			var _this = this;
 			var $this = $(this);
 			var paging = $this.next(".paging");
+			var len = Math.ceil(this._len / this._view);
 			
 			paging.html("");
-			$this.find(" > ul > li").each(function (i, el) {
-				var num = (i+1) / _this._view;
-				if((i+1) % _this._view == 0) {
-					paging.append('<button type="button" class="btn_page">page' + num + '</button>');
-				}
-			});
+			for(var i = 1; i <= len; i++) {
+				paging.append('<button type="button" class="btn_page">page' + i + '</button>');
+			}
+
 			paging.find(".btn_page").bind("click", function (e) {
 				_this.go_page($(this).index());
 			});
