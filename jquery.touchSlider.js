@@ -380,16 +380,17 @@
 		},
 		
 		move : function (obj) {
-			var transform = "translate3d(" + obj.to + "px,0,0)",
+			var transition = (obj.speed !== undefined) ? obj.speed + "ms ease" : "none",
+				transform = "translate3d(" + obj.to + "px,0,0)",
 				transStyle = {
 					"left" : "0",
-					"-moz-transition" : "none",
+					"-moz-transition" : transition,
 					"-moz-transform" : transform,
-					"-ms-transition" : "none",
+					"-ms-transition" : transition,
 					"-ms-transform" : transform,
-					"-webkit-transition" : "none",
+					"-webkit-transition" : transition,
 					"-webkit-transform" : transform,
-					"transition" : "none",
+					"transition" : transition,
 					"transform" : transform
 				},
 				list_wrap = this._list_wrap,
@@ -399,31 +400,37 @@
 				if(obj.speed === undefined) {
 					obj.tg.css(transStyle);
 				} else {
-					list_wrap_gap = obj.gap - (obj.to - obj.from) - obj.gap;
+					if(obj.btn_click) {
+						setTimeout(function () {
+							obj.tg.css(transStyle);
+						}, 10);
+					} else {
+						list_wrap_gap = obj.gap - (obj.to - obj.from) - obj.gap;
 
-					obj.tg.css({
-						"left" : obj.to + "px",
-						"-moz-transition" : "none",
-						"-moz-transform" : "none",
-						"-ms-transition" : "none",
-						"-ms-transform" : "none",
-						"-webkit-transition" : "none",
-						"-webkit-transform" : "none",
-						"transition" : "none",
-						"transform" : "none"
-					});
-
-					list_wrap.css({
-						transition : "none",
-						transform : "translate3d(" + list_wrap_gap + "px,0,0)"
-					});
-
-					setTimeout(function () {
-						list_wrap.css({
-							transition : obj.speed + "ms ease",
-							transform : "translate3d(0,0,0)"
+						obj.tg.css({
+							"left" : obj.to + "px",
+							"-moz-transition" : "none",
+							"-moz-transform" : "none",
+							"-ms-transition" : "none",
+							"-ms-transform" : "none",
+							"-webkit-transition" : "none",
+							"-webkit-transform" : "none",
+							"transition" : "none",
+							"transform" : "none"
 						});
-					}, 10);
+
+						list_wrap.css({
+							transition : "none",
+							transform : "translate3d(" + list_wrap_gap + "px,0,0)"
+						});
+
+						setTimeout(function () {
+							list_wrap.css({
+								transition : obj.speed + "ms ease",
+								transform : "translate3d(0,0,0)"
+							});
+						}, 10);
+					}
 				}
 			} else {
 				if(obj.speed === undefined) {
@@ -448,13 +455,14 @@
 				for(var i=0, len = this._len; i<len; ++i) {
 					from = this._pos[i];
 					to = this._pos[i] = this._start[i] + gap;
-
+					
 					this.move({
 						tg : list.eq(i),
 						gap : gap,
 						from : from,
 						to : to,
-						speed : speed
+						speed : speed,
+						btn_click : btn_click
 					});
 				}
 
