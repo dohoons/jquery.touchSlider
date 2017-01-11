@@ -10,7 +10,7 @@
  *		flexible		-	유동 레이아웃 (default true)
  *		resize			-	리사이즈 사용 (default false)
  *		view			-	다중 컬럼 (default 1)
- *		speed			-	애니메이션 속도 (default 75)
+ *		speed			-	애니메이션 속도 (default 150)
  *		range			-	넘김 판정 범위 (default 0.15)
  *		page			-	초기 페이지 (default 1)
  *		transition		-	CSS3 transition 사용 (default true)
