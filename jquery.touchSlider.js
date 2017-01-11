@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.1.8
+ * @version	1.1.9
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -88,7 +88,8 @@
 			this._view = this.opts.view;
 			this._speed = this.opts.speed;
 			this._tg = $(this);
-			this._list = this._tg.children().children();
+			this._list_wrap = this._tg.children()
+			this._list = this._list_wrap.children();
 			this._width = parseInt(this._tg.css("width"));
 			this._item_w = parseInt(this._list.css("width"));
 			this._len = this._list.length;
@@ -379,26 +380,49 @@
 		},
 		
 		move : function (obj) {
-			var transition = (obj.speed !== undefined) ? obj.speed + "ms ease" : "none",
-				transform = "translate3d(" + obj.to + "px,0,0)",
+			var transform = "translate3d(" + obj.to + "px,0,0)",
 				transStyle = {
 					"left" : "0",
-					"-moz-transition" : transition,
+					"-moz-transition" : "none",
 					"-moz-transform" : transform,
-					"-ms-transition" : transition,
+					"-ms-transition" : "none",
 					"-ms-transform" : transform,
-					"-webkit-transition" : transition,
+					"-webkit-transition" : "none",
 					"-webkit-transform" : transform,
-					"transition" : transition,
+					"transition" : "none",
 					"transform" : transform
-				};
+				},
+				list_wrap = this._list_wrap,
+				list_wrap_gap = 0;
 
 			if(this.opts.supportsCssTransitions && this.opts.transition) {
 				if(obj.speed === undefined) {
 					obj.tg.css(transStyle);
 				} else {
+					list_wrap_gap = obj.gap - (obj.to - obj.from) - obj.gap;
+
+					obj.tg.css({
+						"left" : obj.to + "px",
+						"-moz-transition" : "none",
+						"-moz-transform" : "none",
+						"-ms-transition" : "none",
+						"-ms-transform" : "none",
+						"-webkit-transition" : "none",
+						"-webkit-transform" : "none",
+						"transition" : "none",
+						"transform" : "none"
+					});
+
+					list_wrap.css({
+						transition : "none",
+						transform : "translate3d(" + list_wrap_gap + "px,0,0)"
+					});
+
 					setTimeout(function () {
-						obj.tg.css(transStyle);
+						list_wrap.css({
+							transition : obj.speed + "ms ease",
+							transform : "translate3d(0,0,0)"
+						});
 					}, 10);
 				}
 			} else {
@@ -414,16 +438,22 @@
 			if(this._drag || !this._scroll || btn_click) {
 				var speed = (spd > -1) ? spd : this._speed,
 					gap = d * (this._item_w * this._view),
-					list = this._list;
+					list = this._list,
+					from = 0,
+					to = 0;
 				
 				if(btn_click) this.position(d);
 				if(this._left === 0 || (!this.opts.roll && this.limit_chk()) ) gap = 0;
 
 				for(var i=0, len = this._len; i<len; ++i) {
-					this._pos[i] = this._start[i] + gap;
+					from = this._pos[i];
+					to = this._pos[i] = this._start[i] + gap;
+
 					this.move({
 						tg : list.eq(i),
-						to : this._pos[i],
+						gap : gap,
+						from : from,
+						to : to,
 						speed : speed
 					});
 				}
