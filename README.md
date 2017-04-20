@@ -29,5 +29,5 @@ $("#touchSlider").touchSlider({
 });
 ```
 
-##Demo
+## Demo
 http://dohoons.com/test/flick
