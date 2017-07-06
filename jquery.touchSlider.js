@@ -405,7 +405,7 @@
 							obj.tg.css(transStyle);
 						}, 10);
 					} else {
-						list_wrap_gap = obj.gap - (obj.to - obj.from) - obj.gap;
+						list_wrap_gap = (obj.gap > 0) ? -(obj.to - obj.from) : obj.from - obj.to;
 
 						obj.tg.css({
 							"left" : obj.to + "px",
