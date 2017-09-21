@@ -125,7 +125,7 @@ $(document).ready(function() {
 				paging.append('<button type="button" class="btn_page">page' + i + '</button>');
 			}
 
-			paging.find(".btn_page").bind("click", function (e) {
+			paging.find(".btn_page").on("click", function (e) {
 				_this.go_page($(this).index());
 			});
 		},
