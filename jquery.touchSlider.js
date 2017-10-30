@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.1.9
+ * @version	1.2.0
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -21,6 +21,7 @@
  *		initComplete 	-	초기화 콜백
  *		counter			-	슬라이드 콜백, 카운터
  *		autoplay		-	자동움직임 관련 옵션 (Object)
+ *		breakpoints		-	브레이크 포인트 옵션 (Object, default null)
  *
  * @example
  
@@ -60,10 +61,27 @@
 				addHoverTarget : "",
 				interval : 3500
 			},
+			breakpoints : null,
 			supportsCssTransitions : 'transition' in document.documentElement.style || 'WebkitTransition' in document.documentElement.style
 		};
 		
 		var opts = $.extend(true, {}, $.fn.touchSlider.defaults, settings);
+
+		if(opts.breakpoints) {
+			opts.breakpoints.defaultOption = {
+				roll: opts.roll,
+				flexible: opts.flexible,
+				speed: opts.speed,
+				view: opts.view,
+				sidePage: opts.sidePage
+			};
+
+			for(var prop in opts.breakpoints) {
+				if(prop !== 'default') {
+					opts.breakpoints[prop] = $.extend({}, opts.breakpoints.defaultOption, opts.breakpoints[prop]);
+				}
+			}
+		}
 		
 		return this.each(function () {
 			
@@ -88,7 +106,8 @@
 			this._view = this.opts.view;
 			this._speed = this.opts.speed;
 			this._tg = $(this);
-			this._list_wrap = this._tg.children()
+			this._list_wrap = this._tg.children();
+			this._list_wrap.find('.blank').remove();
 			this._list = this._list_wrap.children();
 			this._width = parseInt(this._tg.css("width"));
 			this._item_w = parseInt(this._list.css("width"));
@@ -130,10 +149,10 @@
 			});
 			
 			if(this.opts.flexible) this._item_w = this._width / this._view;
-			
+
 			if(this.opts.roll) {
 				if(this._len % this._view > 0) {
-					var blank = $(document.createElement(this._list.eq(0).prop("tagName"))).hide();
+					var blank = $(document.createElement(this._list.eq(0).prop("tagName"))).hide().addClass('blank');
 					var cnt = this._view - (this._len % this._view);
 					for(var j=0; j<cnt; ++j) {
 						this._list.parent().append(blank.clone());
@@ -512,7 +531,31 @@
 		},
 		
 		counter : function () {
+			if(this.opts.breakpoints) {
+				var winSize = $(window).width();
+				var bpDefaultOpt = this.opts.breakpoints.defaultOption;
+				var bpCurrentOpt = bpDefaultOpt;
+				var optionChanged = false;
+
+				for(var prop in this.opts.breakpoints) {
+					if(Boolean(Number(prop)) && winSize <= Number(prop)) {
+						bpCurrentOpt = this.opts.breakpoints[prop];
+						break;
+					}
+				}
+				for(var optionProp in bpCurrentOpt) {
+					if(bpDefaultOpt.hasOwnProperty(optionProp) && this.opts[optionProp] !== bpCurrentOpt[optionProp]) {
+						this.opts[optionProp] = bpCurrentOpt[optionProp];
+						optionChanged = true;
+					}
+				}
+				
+				if(optionChanged) {
+					this.init();
+				}
+			}
 			if($.inArray(0, this._pos) < 0) {
+				this.opts.page = 0;
 				this.init();
 			}
 			this.opts.page = this.get_page().current;
