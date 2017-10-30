@@ -532,7 +532,7 @@
 		
 		counter : function () {
 			if(this.opts.breakpoints) {
-				var winSize = $(window).width();
+				var winSize = this._width;
 				var bpDefaultOpt = this.opts.breakpoints.defaultOption;
 				var bpCurrentOpt = bpDefaultOpt;
 				var optionChanged = false;
