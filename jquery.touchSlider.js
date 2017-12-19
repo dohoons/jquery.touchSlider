@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.2.0
+ * @version	1.2.1
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -225,6 +225,7 @@
 							if(e.type == "mouseenter") {
 								_this.autoStop();
 							} else {
+								_this.autoStop();
 								_this.autoPlay();
 							}
 						});
@@ -572,7 +573,7 @@
 		autoPlay : function () {
 			var _this = this;
 			this._timer = setInterval(function () {
-				if(_this.opts.autoplay.enable) {
+				if(_this.opts.autoplay.enable && !_this._drag) {
 					var page = _this.get_page();
 					if(page.current == page.total && !_this.opts.roll) {
 						_this.go_page(0);
