@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.2.1
+ * @version	1.2.2
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -151,6 +151,9 @@
 			if(this.opts.flexible) this._item_w = this._width / this._view;
 
 			if(this.opts.roll) {
+				if(this._len / this._view <= 1) {
+					this.opts.roll = false;
+				}
 				if(this._len % this._view > 0) {
 					var blank = $(document.createElement(this._list.eq(0).prop("tagName"))).hide().addClass('blank');
 					var cnt = this._view - (this._len % this._view);
