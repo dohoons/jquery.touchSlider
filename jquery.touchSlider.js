@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.2.2
+ * @version	1.2.3
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -31,10 +31,31 @@
 
 */
 
-/* global jQuery */
+/* jslint node: true, jquery: true */
+/* globals define */
 
-;(function ($) {
+(function (factory) {
+	"use strict";
 
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery'], factory);
+	} else if (typeof module === 'object' && module.exports) {
+		module.exports = function (root, jQuery) {
+			if (jQuery === undefined) {
+				if (typeof window !== 'undefined') {
+					jQuery = require('jquery');
+				}
+				else {
+					jQuery = require('jquery')(root);
+				}
+			}
+			factory(jQuery);
+			return jQuery;
+		};
+	} else {
+		factory(jQuery);
+	}
+}(function ($) {
 	"use strict";
 	
 	$.fn.touchSlider = function (settings) {
@@ -604,5 +625,4 @@
 		}
 		
 	};
-
-})(jQuery);
+}));
