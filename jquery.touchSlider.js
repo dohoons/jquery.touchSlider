@@ -2,10 +2,11 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.2.3
+ * @version	1.3.0
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
+ *		useMouse		-	마우스 드래그 사용 (default true)
  *		roll			-	순환 (default true)
  *		flexible		-	유동 레이아웃 (default true)
  *		resize			-	리사이즈 사용 (default true)
@@ -61,6 +62,7 @@
 	$.fn.touchSlider = function (settings) {
 		
 		$.fn.touchSlider.defaults = {
+			useMouse: true,
 			roll : true,
 			flexible : true,
 			resize : true,
@@ -153,16 +155,16 @@
 					.off("touchmove", this.touchmove)
 					.off("touchend", this.touchend)
 					.off("touchcancel", this.touchend)
-					.off("dragstart", this.touchstart)
-					.off("drag", this.touchmove)
-					.off("dragend", this.touchend)
 					.on("touchstart", this.touchstart)
 					.on("touchmove", this.touchmove)
 					.on("touchend", this.touchend)
-					.on("touchcancel", this.touchend)
-					.on("dragstart", this.touchstart)
-					.on("drag", this.touchmove)
-					.on("dragend", this.touchend);
+					.on("touchcancel", this.touchend);
+
+			if(this.opts.useMouse) {
+				this._tg
+					.off("mousedown", this.touchstart)
+					.on("mousedown", this.touchstart);
+			}
 
 			this._tg.children().css({
 				"width":this._width + "px",
@@ -313,19 +315,37 @@
 			if(!this.opts.propagation) {
 				e.stopPropagation();
 			}
-			if((e.type == "touchstart" && e.originalEvent.touches.length <= 1) || e.type == "dragstart") {
+			if((e.type == "touchstart" && e.originalEvent.touches.length <= 1) || e.type == "mousedown") {
 				this._startX = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX;
 				this._startY = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : e.pageY;
 				this._scroll = false;
 				this._start = this._pos.slice(0);
+
+				if(e.type == "mousedown") {
+					$(document)
+						.on('mousemove', this, this.mousemove)
+						.on('mouseup', this, this.mouseup);
+				}
 			}
+		},
+
+		mousemove : function (e) {
+			e.data.touchmove.call(e.data, e);
+		},
+
+		mouseup : function (e) {
+			$(document)
+				.off('mousemove', e.data.mousemove)
+				.off('mouseup', e.data.mouseup);
+
+			e.data.touchend.call(e.data, e);
 		},
 		
 		touchmove : function (e) {
 			if(!this.opts.propagation) {
 				e.stopPropagation();
 			}
-			if((e.type == "touchmove" && e.originalEvent.touches.length <= 1) || e.type == "drag") {
+			if((e.type == "touchmove" && e.originalEvent.touches.length <= 1) || e.type == "mousemove") {
 				this._left = (e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX) - this._startX;
 				this._top = (e.originalEvent.touches ? e.originalEvent.touches[0].pageY : e.pageY) - this._startY;
 				var w = this._left < 0 ? this._left * -1 : this._left;
