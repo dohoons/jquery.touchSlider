@@ -8,7 +8,7 @@
  * @param Object	settings	환경변수 오브젝트
  *		roll			-	순환 (default true)
  *		flexible		-	유동 레이아웃 (default true)
- *		resize			-	리사이즈 사용 (default false)
+ *		resize			-	리사이즈 사용 (default true)
  *		view			-	다중 컬럼 (default 1)
  *		speed			-	애니메이션 속도 (default 150)
  *		range			-	넘김 판정 범위 (default 0.15)
