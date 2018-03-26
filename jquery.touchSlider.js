@@ -155,6 +155,8 @@
 					.off("touchmove", this.touchmove)
 					.off("touchend", this.touchend)
 					.off("touchcancel", this.touchend)
+					.off("dragstart")
+					.on("dragstart", function(e) { e.preventDefault(); })
 					.on("touchstart", this.touchstart)
 					.on("touchmove", this.touchmove)
 					.on("touchend", this.touchend)
@@ -312,6 +314,9 @@
 		},
 		
 		touchstart : function (e) {
+			if(e.target.tagName === "IMG") {
+				e.preventDefault();
+			}
 			if(!this.opts.propagation) {
 				e.stopPropagation();
 			}
