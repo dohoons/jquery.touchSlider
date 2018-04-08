@@ -1,0 +1,34 @@
+{
+  "name": "jquery.touchslider",
+  "version": "1.3.1",
+  "description": "A jQuery plugin that makes it easy to create touch sliders.",
+	"keywords": [
+		"touchSlider",
+		"jquery.touchSlider",
+		"swipe",
+		"swiper",
+		"slider",
+		"flick",
+		"flick navigation",
+		"carousel",
+    "mobile",
+    "touch"
+	],
+  "main": "jquery.touchSlider.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dohoons/jquery.touchSlider.git"
+  },
+  "author": {
+    "name": "dohoons",
+    "email": "dohoons@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dohoons/jquery.touchSlider/issues"
+  },
+  "homepage": "https://github.com/dohoons/jquery.touchSlider#readme"
+}
