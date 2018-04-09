@@ -5,7 +5,27 @@
 - PC 브라우저에서 드래그로 사용가능 (기본 옵션으로 포함 v1.3.0)
 - jQuery 1.7+, IE7+ 지원
 
-## 기본구조
+## Demo
+http://dohoons.com/test/flick
+
+## 설치 방법
+
+### \<script\> 태그 추가
+``` html
+<script src="jquery.touchSlider.js"></script>
+```
+
+### NPM
+
+``` sh
+$ npm i jquery.touchslider
+```
+``` js
+var $ = require('jquery');
+require('jquery.touchslider')($);
+```
+
+## 기본 사용법
 ``` css
 #touchSlider { width:100%; height:150px; background:#ccc; position:relative; overflow:hidden; }
 #touchSlider ul { width:99999px; height:150px; position:absolute; top:0; left:0; overflow:hidden; }
@@ -28,6 +48,3 @@ $("#touchSlider").touchSlider({
 	page : 2
 });
 ```
-
-## Demo
-http://dohoons.com/test/flick
