@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.3.2
+ * @version	1.4.0
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -11,6 +11,7 @@
  *		flexible		-	유동 레이아웃 (default true)
  *		resize			-	리사이즈 사용 (default true)
  *		view			-	다중 컬럼 (default 1)
+ *		gap				-	아이템 사이 여백 (default 0)
  *		speed			-	애니메이션 속도 (default 150)
  *		range			-	넘김 판정 범위 (default 0.15)
  *		page			-	초기 페이지 (default 1)
