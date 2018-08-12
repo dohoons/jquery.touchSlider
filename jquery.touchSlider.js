@@ -35,7 +35,7 @@
 /* jslint node: true, jquery: true */
 /* globals define */
 
-(function (factory) {
+(function(factory) {
 	"use strict";
 
 	if (typeof define === 'function' && define.amd) {
@@ -45,37 +45,37 @@
 	} else {
 		factory(jQuery);
 	}
-}(function ($) {
+}(function($) {
 	"use strict";
 	
-	$.fn.touchSlider = function (settings) {
+	$.fn.touchSlider = function(settings) {
 		
 		$.fn.touchSlider.defaults = {
 			useMouse: true,
-			roll : true,
-			flexible : true,
-			resize : true,
-			btn_prev : null,
-			btn_next : null,
-			paging : null,
-			speed : 150,
-			view : 1,
-			gap : 0,
-			range : 0.15,
-			page : 1,
-			sidePage : false,
-			transition : true,
-			initComplete : null,
-			counter : null,
-			propagation : false,
-			autoplay : {
-				enable : false,
-				pauseHover : true,
-				addHoverTarget : "",
-				interval : 3500
+			roll: true,
+			flexible: true,
+			resize: true,
+			btn_prev: null,
+			btn_next: null,
+			paging: null,
+			speed: 150,
+			view: 1,
+			gap: 0,
+			range: 0.15,
+			page: 1,
+			sidePage: false,
+			transition: true,
+			initComplete: null,
+			counter: null,
+			propagation: false,
+			autoplay: {
+				enable: false,
+				pauseHover: true,
+				addHoverTarget: "",
+				interval: 3500
 			},
-			breakpoints : null,
-			supportsCssTransitions : 'transition' in document.documentElement.style || 'WebkitTransition' in document.documentElement.style
+			breakpoints: null,
+			supportsCssTransitions: 'transition' in document.documentElement.style || 'WebkitTransition' in document.documentElement.style
 		};
 		
 		var opts = $.extend(true, {}, $.fn.touchSlider.defaults, settings);
@@ -86,7 +86,7 @@
 				flexible: opts.flexible,
 				speed: opts.speed,
 				view: opts.view,
-				gap : opts.gap,
+				gap: opts.gap,
 				sidePage: opts.sidePage
 			};
 
@@ -97,7 +97,7 @@
 			}
 		}
 		
-		return this.each(function () {
+		return this.each(function() {
 			
 			var _this = this;
 
@@ -105,7 +105,7 @@
 			this.opts = opts;
 			this.init();
 			
-			$(window).on("orientationchange resize", function () {
+			$(window).on("orientationchange resize", function() {
 				_this.resize.call(_this);
 			});
 		});
@@ -114,7 +114,7 @@
 	
 	var touchSlider = {
 		
-		init : function () {
+		init: function() {
 			var _this = this;
 			
 			this._view = this.opts.view;
@@ -160,8 +160,8 @@
 			}
 
 			this._tg.children().css({
-				"width":this._width + "px",
-				"overflow":"visible"
+				width: this._width + "px",
+				overflow: "visible"
 			});
 			
 			if(this.opts.flexible) this._item_w = (this._width - (this._view - 1) * this.opts.gap) / this._view;
@@ -178,8 +178,7 @@
 					}
 				}
 				this._list = this._tg.children().children();
-				this._len = this._list.length;
-				this._len = (this._len / this._view) * this._view;
+				this._len = (this._list.length / this._view) * this._view;
 			}
 			
 			var page_gap = (this.opts.page > 1 && this.opts.page <= this._len) ? (this.opts.page - 1) * (this._item_w * this._view + this._view * this.opts.gap) : 0;
@@ -191,15 +190,15 @@
 				this._start[i] = this._pos[i];
 
 				this._list.eq(i).css({
-					"float" : "none",
-					"position" : "absolute",
-					"top" : "0",
-					"width" : this._item_w + "px"
+					float: "none",
+					position: "absolute",
+					top: "0",
+					width: this._item_w + "px"
 				});
 					
 				this.move({
-					tg : this._list.eq(i),
-					to : this._pos[i]
+					tg: this._list.eq(i),
+					to: this._pos[i]
 				});
 			}
 			
@@ -215,7 +214,7 @@
 			}
 			
 			if(this.opts.paging) {
-				$(this._list).each(function (i) {
+				$(this._list).each(function(i) {
 					var btn_page = _this.opts.paging.eq(0).clone();
 					_this.opts.paging.before(btn_page);
 					
@@ -243,7 +242,7 @@
 				
 				if(this.opts.autoplay.pauseHover) {
 					$(this._hover_tg).each(function() {
-						$(this).off("mouseenter mouseleave").on("mouseenter mouseleave", function (e) {
+						$(this).off("mouseenter mouseleave").on("mouseenter mouseleave", function(e) {
 							if(e.type == "mouseenter") {
 								_this.autoStop();
 							} else {
@@ -258,7 +257,7 @@
 				this.autoPlay();
 			}
 			
-			this._tg.off("click").on("click", "a", function () {
+			this._tg.off("click").on("click", "a", function() {
 				if(!_this._link) {
 					return false;
 				}
@@ -268,7 +267,7 @@
 			this.counter();
 		},
 		
-		initComplete : function () {
+		initComplete: function() {
 			if(this.opts.sidePage) {
 				this.animate(-1, true, 0);
 				this.animate(1, true, 0);
@@ -278,7 +277,7 @@
 			}
 		},
 		
-		resize : function () {
+		resize: function() {			
 			if(this.opts.flexible) {
 				var tmp_w = this._item_w;
 
@@ -287,10 +286,10 @@
 				this._range = this.opts.range * this._width;
 
 				this._list.css({
-					"width" : this._item_w + "px"
+					width: this._item_w + "px"
 				});
 				this._list.parent().css({
-					"width" : this._width + "px"
+					width: this._width + "px"
 				});
 
 				for(var i=0, len=this._len, gap=0; i<len; ++i) {
@@ -300,8 +299,8 @@
 					this._start[i] = (this._start[i] - gap) / tmp_w * this._item_w + gap;
 
 					this.move({
-						tg : this._list.eq(i),
-						to : this._pos[i]
+						tg: this._list.eq(i),
+						to: this._pos[i]
 					});
 				}
 			}
@@ -333,7 +332,7 @@
 			this.counter();
 		},
 		
-		touchstart : function (e) {
+		touchstart: function(e) {
 			if(e.target.tagName === "IMG") {
 				e.preventDefault();
 			}
@@ -354,11 +353,11 @@
 			}
 		},
 
-		mousemove : function (e) {
+		mousemove: function(e) {
 			e.data.touchmove.call(e.data, e);
 		},
 
-		mouseup : function (e) {
+		mouseup: function(e) {
 			$(document)
 				.off('mousemove', e.data.mousemove)
 				.off('mouseup', e.data.mouseup);
@@ -366,7 +365,7 @@
 			e.data.touchend.call(e.data, e);
 		},
 		
-		touchmove : function (e) {
+		touchmove: function(e) {
 			if(!this.opts.propagation) {
 				e.stopPropagation();
 			}
@@ -393,8 +392,8 @@
 					var tmp = this._start[i] + this._left;
 					
 					this.move({
-						tg : this._list.eq(i),
-						to : tmp
+						tg: this._list.eq(i),
+						to: tmp
 					});
 					
 					this._pos[i] = tmp;
@@ -402,7 +401,7 @@
 			}
 		},
 		
-		touchend : function (e) {
+		touchend: function(e) {
 			if(!this.opts.propagation) {
 				e.stopPropagation();
 			}
@@ -417,13 +416,13 @@
 				this._scroll = true;
 				
 				var _this = this;
-				setTimeout(function () {
+				setTimeout(function() {
 					_this._link = true;
 				},50);
 			}
 		},
 		
-		position : function (d) { 
+		position: function(d) { 
 			var len = this._len,
 				view = this._view,
 				page_gap = view * this._item_w + view * this.opts.gap,
@@ -451,16 +450,16 @@
 					for(i=0; i<view; ++i, ++p_min, ++p_max) {
 						this._start[p_max] = this._start[p_min] - page_gap;
 						this.move({
-							tg : this._list.eq(p_max),
-							to : this._start[p_max]
+							tg: this._list.eq(p_max),
+							to: this._start[p_max]
 						});
 					}
 				} else if((d == -1 && tmp_pos[max_chk] <= 0) || (this._drag && tmp_pos[max_chk] <= 0)) {
 					for(i=0; i<view; ++i, ++p_min, ++p_max) {
 						this._start[p_min] = this._start[p_max] + page_gap;
 						this.move({
-							tg : this._list.eq(p_min),
-							to : this._start[p_min]
+							tg: this._list.eq(p_min),
+							to: this._start[p_min]
 						});
 					}
 				}
@@ -469,19 +468,19 @@
 			}
 		},
 		
-		move : function (obj) {
+		move: function(obj) {
 			var transition = (obj.speed !== undefined) ? obj.speed + "ms ease" : "none",
 				transform = "translate3d(" + obj.to + "px,0,0)",
 				transStyle = {
-					"left" : "0",
-					"-moz-transition" : transition,
-					"-moz-transform" : transform,
-					"-ms-transition" : transition,
-					"-ms-transform" : transform,
-					"-webkit-transition" : transition,
-					"-webkit-transform" : transform,
-					"transition" : transition,
-					"transform" : transform
+					"left": "0",
+					"-moz-transition": transition,
+					"-moz-transform": transform,
+					"-ms-transition": transition,
+					"-ms-transform": transform,
+					"-webkit-transition": transition,
+					"-webkit-transform": transform,
+					"transition": transition,
+					"transform": transform
 				},
 				list_wrap = this._list_wrap,
 				list_wrap_gap = 0;
@@ -491,33 +490,33 @@
 					obj.tg.css(transStyle);
 				} else {
 					if(obj.btn_click) {
-						setTimeout(function () {
+						setTimeout(function() {
 							obj.tg.css(transStyle);
 						}, 10);
 					} else {
 						list_wrap_gap = (obj.gap > 0) ? -(obj.to - obj.from) : obj.from - obj.to;
 
 						obj.tg.css({
-							"left" : obj.to + "px",
-							"-moz-transition" : "none",
-							"-moz-transform" : "none",
-							"-ms-transition" : "none",
-							"-ms-transform" : "none",
-							"-webkit-transition" : "none",
-							"-webkit-transform" : "none",
-							"transition" : "none",
-							"transform" : "none"
+							"left": obj.to + "px",
+							"-moz-transition": "none",
+							"-moz-transform": "none",
+							"-ms-transition": "none",
+							"-ms-transform": "none",
+							"-webkit-transition": "none",
+							"-webkit-transform": "none",
+							"transition": "none",
+							"transform": "none"
 						});
 
 						list_wrap.css({
-							transition : "none",
-							transform : "translate3d(" + list_wrap_gap + "px,0,0)"
+							transition: "none",
+							transform: "translate3d(" + list_wrap_gap + "px,0,0)"
 						});
 
-						setTimeout(function () {
+						setTimeout(function() {
 							list_wrap.css({
-								transition : obj.speed + "ms ease",
-								transform : "translate3d(0,0,0)"
+								transition: obj.speed + "ms ease",
+								transform: "translate3d(0,0,0)"
 							});
 						}, 10);
 					}
@@ -531,7 +530,7 @@
 			}
 		},
 		
-		animate : function (d, btn_click, spd) {
+		animate: function(d, btn_click, spd) {
 			if(this._drag || !this._scroll || btn_click) {
 				var speed = (spd > -1) ? spd : this._speed,
 					gap = d * (this._item_w * this._view + this._view * this.opts.gap),
@@ -547,12 +546,12 @@
 					to = this._pos[i] = this._start[i] + gap;
 					
 					this.move({
-						tg : list.eq(i),
-						gap : gap,
-						from : from,
-						to : to,
-						speed : speed,
-						btn_click : btn_click
+						tg: list.eq(i),
+						gap: gap,
+						from: from,
+						to: to,
+						speed: speed,
+						btn_click: btn_click
 					});
 				}
 
@@ -562,7 +561,7 @@
 			}
 		},
 		
-		direction : function () { 
+		direction: function() { 
 			var r = 0;
 		
 			if(this._left < -(this._range)) r = -1;
@@ -573,12 +572,12 @@
 			return r;
 		},
 		
-		limit_chk : function () {
+		limit_chk: function() {
 			var last_p = parseInt((this._len - 1) / this._view) * this._view;
 			return ( (this._start[0] === 0 && this._left > 0) || (this._start[last_p] === 0 && this._left < 0) );
 		},
 		
-		go_page : function (i) {
+		go_page: function(i) {
 			var crt = ($.inArray(0, this._pos) / this._view) + 1;
 			var cal = crt - (i + 1);
 			
@@ -593,15 +592,15 @@
 			}
 		},
 		
-		get_page : function () {
+		get_page: function() {
 			return {
-				obj : this,
-				total : Math.ceil(this._len / this._view),
-				current : ($.inArray(0, this._pos) / this._view) + 1
+				obj: this,
+				total: Math.ceil(this._len / this._view),
+				current: ($.inArray(0, this._pos) / this._view) + 1
 			};
 		},
 		
-		counter : function () {
+		counter: function() {
 			var currentPage = this.get_page();
 			
 			if($.inArray(0, this._pos) < 0) {
@@ -611,7 +610,7 @@
 			this.opts.page = currentPage.current;
 			if(this.opts.resize) {
 				this._tg.css({
-					"height" : this._list.eq(this.opts.page-1).height() + "px"
+					height: this._list.eq(this.opts.page-1).height() + "px"
 				});
 			}
 			if(typeof(this.opts.counter) == "function") {
@@ -619,9 +618,9 @@
 			}
 		},
 		
-		autoPlay : function () {
+		autoPlay: function() {
 			var _this = this;
-			this._timer = setInterval(function () {
+			this._timer = setInterval(function() {
 				if(_this.opts.autoplay.enable && !_this._drag) {
 					var page = _this.get_page();
 					if(page.current == page.total && !_this.opts.roll) {
@@ -633,11 +632,11 @@
 			}, this.opts.autoplay.interval);
 		},
 		
-		autoStop : function () {
+		autoStop: function() {
 			clearInterval(this._timer);
 		},
 		
-		autoPauseToggle : function () {
+		autoPauseToggle: function() {
 			if(this.opts.autoplay.enable) {
 				this.autoStop();
 				this.opts.autoplay.enable = false;
