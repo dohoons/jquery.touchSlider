@@ -60,6 +60,7 @@
 			paging : null,
 			speed : 150,
 			view : 1,
+			gap : 0,
 			range : 0.15,
 			page : 1,
 			sidePage : false,
@@ -85,6 +86,7 @@
 				flexible: opts.flexible,
 				speed: opts.speed,
 				view: opts.view,
+				gap : opts.gap,
 				sidePage: opts.sidePage
 			};
 
@@ -104,7 +106,7 @@
 			this.init();
 			
 			$(window).on("orientationchange resize", function () {
-				_this.resize(_this);
+				_this.resize.call(_this);
 			});
 		});
 	
@@ -162,7 +164,7 @@
 				"overflow":"visible"
 			});
 			
-			if(this.opts.flexible) this._item_w = this._width / this._view;
+			if(this.opts.flexible) this._item_w = (this._width - (this._view - 1) * this.opts.gap) / this._view;
 
 			if(this.opts.roll) {
 				if(this._len / this._view <= 1) {
@@ -180,11 +182,14 @@
 				this._len = (this._len / this._view) * this._view;
 			}
 			
-			var page_gap = (this.opts.page > 1 && this.opts.page <= this._len) ? (this.opts.page - 1) * this._item_w * this._view : 0;
+			var page_gap = (this.opts.page > 1 && this.opts.page <= this._len) ? (this.opts.page - 1) * (this._item_w * this._view + this._view * this.opts.gap) : 0;
 			
-			for(var i=0, len=this._len; i<len; ++i) {
-				this._pos[i] = this._item_w * i - page_gap;
+			for(var i=0, len=this._len, gap=0; i<len; ++i) {
+				gap = this.opts.gap * i;
+
+				this._pos[i] = this._item_w * i - page_gap + gap;
 				this._start[i] = this._pos[i];
+
 				this._list.eq(i).css({
 					"float" : "none",
 					"position" : "absolute",
@@ -273,29 +278,55 @@
 			}
 		},
 		
-		resize : function (e) {
-			if(e.opts.flexible) {
-				var tmp_w = e._item_w;
-				
-				e._width = parseInt(e._tg.css("width"));
-				e._item_w = e._width / e._view;
-				e._range = e.opts.range * e._width;
-				
-				e._list.css({
-					"width" : e._item_w + "px"
+		resize : function () {
+			if(this.opts.flexible) {
+				var tmp_w = this._item_w;
+
+				this._width = parseInt(this._tg.css("width"));
+				this._item_w = (this._width - (this._view - 1) * this.opts.gap) / this._view;
+				this._range = this.opts.range * this._width;
+
+				this._list.css({
+					"width" : this._item_w + "px"
 				});
-				e._list.parent().css({
-					"width" : e._item_w + "px"
+				this._list.parent().css({
+					"width" : this._width + "px"
 				});
 
-				for(var i=0, len=e._len; i<len; ++i) {
-					e._pos[i] = e._pos[i] / tmp_w * e._item_w;
-					e._start[i] = e._start[i] / tmp_w * e._item_w;
+				for(var i=0, len=this._len, gap=0; i<len; ++i) {
+					gap = this.opts.gap * i;
 					
+					this._pos[i] = (this._pos[i] - gap) / tmp_w * this._item_w + gap;
+					this._start[i] = (this._start[i] - gap) / tmp_w * this._item_w + gap;
+
 					this.move({
-						tg : e._list.eq(i),
-						to : e._pos[i]
+						tg : this._list.eq(i),
+						to : this._pos[i]
 					});
+				}
+			}
+			
+			if(this.opts.breakpoints) {
+				var winSize = this._width;
+				var bpDefaultOpt = this.opts.breakpoints.defaultOption;
+				var bpCurrentOpt = bpDefaultOpt;
+				var optionChanged = false;
+
+				for(var prop in this.opts.breakpoints) {
+					if(Boolean(Number(prop)) && winSize <= Number(prop)) {
+						bpCurrentOpt = this.opts.breakpoints[prop];
+						break;
+					}
+				}
+				for(var optionProp in bpCurrentOpt) {
+					if(bpDefaultOpt.hasOwnProperty(optionProp) && this.opts[optionProp] !== bpCurrentOpt[optionProp]) {
+						this.opts[optionProp] = bpCurrentOpt[optionProp];
+						optionChanged = true;
+					}
+				}
+
+				if(optionChanged) {
+					this.init();
 				}
 			}
 			
@@ -381,6 +412,7 @@
 				this._scroll = false;
 			} else {
 				this.animate(this.direction());
+
 				this._drag = false;
 				this._scroll = true;
 				
@@ -394,16 +426,16 @@
 		position : function (d) { 
 			var len = this._len,
 				view = this._view,
-				gap = view * this._item_w,
+				page_gap = view * this._item_w + view * this.opts.gap,
 				i = 0;
 			
 			if(d == -1 || d == 1) {
 				this._startX = 0;
 				this._start = this._pos.slice(0);
-				this._left = d * gap;
+				this._left = d * page_gap;
 			} else {
-				if(this._left > gap) this._left = gap;
-				if(this._left < - gap) this._left = - gap;
+				if(this._left > page_gap) this._left = page_gap;
+				if(this._left < - page_gap) this._left = - page_gap;
 			}
 			
 			if(this.opts.roll) {
@@ -417,7 +449,7 @@
 				
 				if((d == 1 && tmp_pos[p-1] >= 0) || (this._drag && tmp_pos[p-1] > 0)) {
 					for(i=0; i<view; ++i, ++p_min, ++p_max) {
-						this._start[p_max] = this._start[p_min] - gap;
+						this._start[p_max] = this._start[p_min] - page_gap;
 						this.move({
 							tg : this._list.eq(p_max),
 							to : this._start[p_max]
@@ -425,7 +457,7 @@
 					}
 				} else if((d == -1 && tmp_pos[max_chk] <= 0) || (this._drag && tmp_pos[max_chk] <= 0)) {
 					for(i=0; i<view; ++i, ++p_min, ++p_max) {
-						this._start[p_min] = this._start[p_max] + gap;
+						this._start[p_min] = this._start[p_max] + page_gap;
 						this.move({
 							tg : this._list.eq(p_min),
 							to : this._start[p_min]
@@ -502,7 +534,7 @@
 		animate : function (d, btn_click, spd) {
 			if(this._drag || !this._scroll || btn_click) {
 				var speed = (spd > -1) ? spd : this._speed,
-					gap = d * (this._item_w * this._view),
+					gap = d * (this._item_w * this._view + this._view * this.opts.gap),
 					list = this._list,
 					from = 0,
 					to = 0;
@@ -570,41 +602,20 @@
 		},
 		
 		counter : function () {
-			if(this.opts.breakpoints) {
-				var winSize = this._width;
-				var bpDefaultOpt = this.opts.breakpoints.defaultOption;
-				var bpCurrentOpt = bpDefaultOpt;
-				var optionChanged = false;
-
-				for(var prop in this.opts.breakpoints) {
-					if(Boolean(Number(prop)) && winSize <= Number(prop)) {
-						bpCurrentOpt = this.opts.breakpoints[prop];
-						break;
-					}
-				}
-				for(var optionProp in bpCurrentOpt) {
-					if(bpDefaultOpt.hasOwnProperty(optionProp) && this.opts[optionProp] !== bpCurrentOpt[optionProp]) {
-						this.opts[optionProp] = bpCurrentOpt[optionProp];
-						optionChanged = true;
-					}
-				}
-				
-				if(optionChanged) {
-					this.init();
-				}
-			}
+			var currentPage = this.get_page();
+			
 			if($.inArray(0, this._pos) < 0) {
 				this.opts.page = 0;
 				this.init();
 			}
-			this.opts.page = this.get_page().current;
+			this.opts.page = currentPage.current;
 			if(this.opts.resize) {
 				this._tg.css({
 					"height" : this._list.eq(this.opts.page-1).height() + "px"
 				});
 			}
 			if(typeof(this.opts.counter) == "function") {
-				this.opts.counter.call(this, this.get_page());
+				this.opts.counter.call(this, currentPage);
 			}
 		},
 		
