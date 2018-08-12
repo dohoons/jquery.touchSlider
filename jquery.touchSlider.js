@@ -265,7 +265,12 @@
 			});
 			
 			this.initComplete();
-			this.counter();
+
+			if(this.opts.breakpoints) {
+				this.resize();
+			} else {
+				this.counter();
+			}
 		},
 		
 		initComplete: function() {
