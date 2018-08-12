@@ -27,9 +27,9 @@ require('jquery.touchslider')($);
 
 ## 기본 사용법
 ``` css
-#touchSlider { width:100%; height:150px; background:#ccc; position:relative; overflow:hidden; }
-#touchSlider ul { width:99999px; height:150px; position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider ul li { float:left; width:100%; height:150px; font-size:14px; color:#fff; }
+#touchSlider { background:#ccc; position:relative; overflow:hidden; }
+#touchSlider ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
 ```
 
 ``` html

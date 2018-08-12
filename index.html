@@ -1,56 +1,58 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>Flick Navigation</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi" />
-<link rel="stylesheet" href="common.css" type="text/css" />
-<style type="text/css">
+<link rel="stylesheet" href="common.css">
+<style>
+body { box-sizing: border-box; max-width:750px; height: auto; margin:0 auto; padding: 20px 10px 100px; }
 h1 { font-size:16px; font-weight:bold; }
 h2 { margin-top:10px; text-align:center; }
 
-#touchSlider { width:100%; height:150px; margin:0 auto; background:#ccc; position:relative; overflow:hidden; }
-#touchSlider ul { width:99999px; height:150px; position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider ul li { float:left; width:100%; height:150px; background:#9C9; font-size:14px; color:#fff; }
+#touchSlider { background:#ccc; position:relative; overflow:hidden; }
+#touchSlider ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
 
-#touchSlider2 { width:200px; height:150px; margin:0 auto; background:#ccc; position:relative; overflow:hidden; }
-#touchSlider2 ul { width:99999px; height:150px; position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider2 ul li { float:left; width:200px; height:150px; background:#9C9; font-size:14px; color:#fff; }
+#touchSlider2 { background:#ccc; position:relative; overflow:hidden; }
+#touchSlider2 ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider2 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
 
-#touchSlider3 { width:240px; height:150px; margin:0 auto; background:#ccc; position:relative; overflow:hidden; }
-#touchSlider3 ul { width:99999px; height:150px; position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider3 ul li { float:left; width:80px; height:150px; background:#9C9; font-size:14px; color:#fff; }
+#touchSlider3 { background:#ccc; position:relative; overflow:hidden; }
+#touchSlider3 ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider3 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
 
-#touchSlider4 { width:240px; height:150px; margin:0 auto; background:#ccc; position:relative; overflow:hidden; }
-#touchSlider4 ul { width:99999px; height:150px; position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider4 ul li { float:left; width:80px; height:150px; background:#9C9; font-size:14px; color:#fff; }
+#touchSlider4 { background:#ccc; position:relative; overflow:hidden; }
+#touchSlider4 ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider4 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
 
-#touchSlider5 { width:100%; height:150px; margin:0 auto; background:#ccc; position:relative; overflow:hidden; }
-#touchSlider5 ul { width:99999px; height:150px; position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider5 ul li { float:left; width:100%; height:150px; background:#9C9; font-size:14px; color:#fff; }
+#touchSlider5 { background:#ccc; position:relative; overflow:hidden; }
+#touchSlider5 ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider5 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
 
-#touchSlider6 { width:100%; height:150px; margin:0 auto; background:#ccc; position:relative; overflow:hidden; }
-#touchSlider6 ul { width:99999px; height:150px; position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider6 ul li { float:left; width:100%; height:150px; background:#9C9; font-size:14px; color:#fff; }
+#touchSlider6 { background:#ccc; position:relative; overflow:hidden; }
+#touchSlider6 ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider6 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
 
-#touchSlider7 { width:100%; height:150px; margin:0 auto; background:#ccc; position:relative; overflow:hidden; }
-#touchSlider7 ul { width:99999px; position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider7 ul li { float:left; width:100%; background:#9C9; font-size:14px; color:#fff; }
+#touchSlider7 { background:#ccc; position:relative; overflow:hidden; }
+#touchSlider7 ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider7 ul li { background:#9C9; font-size:14px; color:#fff; }
 
 .touchSlider8_wrap { background:#ccc; overflow:hidden; }
 #touchSlider8 { height:150px; margin-right:10%; position:relative; overflow:visible; }
-#touchSlider8 ul { width:99999px; position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider8 ul li { float:left; width:100%; height:150px; background:#9C9; font-size:14px; color:#fff; }
+#touchSlider8 ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider8 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
 
 .touchSlider9_wrap { background:#ccc; overflow:hidden; }
-#touchSlider9 { height:150px; margin-right:10%; position:relative; overflow:visible; }
-#touchSlider9 ul { width:99999px; position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider9 ul li { float:left; width:100%; height:150px; background:#9C9; font-size:14px; color:#fff; }
+#touchSlider9 { margin-right:10%; position:relative; overflow:visible; }
+#touchSlider9 ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider9 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
 
 .touchSlider10_wrap { background:#ccc; overflow:hidden; }
-#touchSlider10 { height:150px; margin:0 10%; position:relative; overflow:visible; }
-#touchSlider10 ul { width:99999px; position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider10 ul li { float:left; width:100%; height:150px; background:#9C9; font-size:14px; color:#fff; }
+#touchSlider10 { margin:0 10%; position:relative; overflow:visible; }
+#touchSlider10 ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider10 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
 
 .btn_area { background:#f5f5f5; text-align:center; overflow:hidden; }
 .btn_area button { display:block; width:100px; height:36px; background:#000; font-size:16px; color:#fff; font-weight:bold; }
@@ -62,122 +64,125 @@ h2 { margin-top:10px; text-align:center; }
 </style>
 
 <!-- jQuery 1.7+, IE 7+ -->
-<script type="text/javascript" src="//code.jquery.com/jquery-1.12.0.min.js"></script>
-<script type="text/javascript" src="jquery.touchSlider.js"></script>
+<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="jquery.touchSlider.js"></script>
 
-<script type="text/javascript">
+<script>
 //<![CDATA[
 $(document).ready(function() {
 	
-	$("#touchSlider").touchSlider({
+	$('#touchSlider').touchSlider({
 		/*
 		autoplay : {
 			enable : true,
 			pauseHover : true,
-			addHoverTarget : "", // 다른 오버영역 추가 ex) ".someBtn, .someContainer"
+			addHoverTarget : '', // 다른 오버영역 추가 ex) '.someBtn, .someContainer'
 			interval : 3500
 		},
 		*/
-		btn_prev : $("#touchSlider").next().find(".btn_prev"),
-		btn_next : $("#touchSlider").next().find(".btn_next"),
-		counter : function (e) {
-			$("#count").html("current : " + e.current + ", total : " + e.total);
+		btn_prev: $('#touchSlider').next().find('.btn_prev'),
+		btn_next: $('#touchSlider').next().find('.btn_next'),
+		counter: function(e) {
+			$('#count').html('current : ' + e.current + ', total : ' + e.total);
 		}
 	});
 	
-	$("#touchSlider2").touchSlider({
-		roll : false,
-		page : 2,
-		speed : 300,
-		btn_prev : $("#touchSlider2").next().find(".btn_prev"),
-		btn_next : $("#touchSlider2").next().find(".btn_next")
+	$('#touchSlider2').touchSlider({
+		roll: false,
+		page: 2,
+		speed: 300,
+		btn_prev: $('#touchSlider2').next().find('.btn_prev'),
+		btn_next: $('#touchSlider2').next().find('.btn_next')
 	});
 	
-	$("#touchSlider3").touchSlider({
-		roll : false,
-		view : 3,
-		btn_prev : $("#touchSlider3").next().find(".btn_prev"),
-		btn_next : $("#touchSlider3").next().find(".btn_next")
+	$('#touchSlider3').touchSlider({
+		roll: false,
+		view: 2,
+		gap: 20,
+		btn_prev: $('#touchSlider3').next().find('.btn_prev'),
+		btn_next: $('#touchSlider3').next().find('.btn_next')
 	});
 	
-	$("#touchSlider4").touchSlider({
-		view : 3,
-		btn_prev : $("#touchSlider4").next().find(".btn_prev"),
-		btn_next : $("#touchSlider4").next().find(".btn_next")
+	$('#touchSlider4').touchSlider({
+		view: 3,
+		gap: 20,
+		btn_prev: $('#touchSlider4').next().find('.btn_prev'),
+		btn_next: $('#touchSlider4').next().find('.btn_next')
 	});
 	
-	$("#touchSlider5").touchSlider({
-		/*
-		breakpoints : {
+	$('#touchSlider5').touchSlider({
+		view: 5,
+		gap: 20,
+		btn_prev: $('#touchSlider5').next().find('.btn_prev'),
+		btn_next: $('#touchSlider5').next().find('.btn_next'),
+		breakpoints: {
 			640: {
-				view: 3
+				view: 3,
+				gap: 15
 			},
-			320: {
-				view: 2
+			375: {
+				view: 2,
+				gap: 10
 			}
-		},
-		*/
-		view : 5,
-		btn_prev : $("#touchSlider5").next().find(".btn_prev"),
-		btn_next : $("#touchSlider5").next().find(".btn_next")
+		}
 	});
 	
-	$("#touchSlider6").touchSlider({
-		initComplete : function (e) {
+	$('#touchSlider6').touchSlider({
+		initComplete: function(e) {
 			var _this = this;
 			var $this = $(this);
-			var paging = $this.next(".paging");
+			var paging = $this.next('.paging');
 			var len = Math.ceil(this._len / this._view);
 			
-			paging.html("");
+			paging.html('');
 			for(var i = 1; i <= len; i++) {
 				paging.append('<button type="button" class="btn_page">page' + i + '</button>');
 			}
 
-			paging.find(".btn_page").on("click", function (e) {
+			paging.find('.btn_page').on('click', function(e) {
 				_this.go_page($(this).index());
 			});
 		},
-		counter : function (e) {
-			$(this).next(".paging").find(".btn_page").removeClass("on").eq(e.current-1).addClass("on");
+		counter: function(e) {
+			$(this).next('.paging').find('.btn_page').removeClass('on').eq(e.current-1).addClass('on');
 		}
 	});
 	
-	$("#touchSlider7").touchSlider({
-		btn_prev : $("#touchSlider7").next().find(".btn_prev"),
-		btn_next : $("#touchSlider7").next().find(".btn_next")
+	$('#touchSlider7').touchSlider({
+		btn_prev: $('#touchSlider7').next().find('.btn_prev'),
+		btn_next: $('#touchSlider7').next().find('.btn_next')
 	});
 	
-	$("#touchSlider8").touchSlider({
-		roll : false,
-		btn_prev : $(".touchSlider8_wrap").next().find(".btn_prev"),
-		btn_next : $(".touchSlider8_wrap").next().find(".btn_next"),
-		counter : function (e) {
+	$('#touchSlider8').touchSlider({
+		roll: false,
+		btn_prev: $('.touchSlider8_wrap').next().find('.btn_prev'),
+		btn_next: $('.touchSlider8_wrap').next().find('.btn_next'),
+		counter: function(e) {
 			var $this = $(this);
 			var list_wrap = $this.children();
 			var gap = $this.parent().width() - this._item_w;
 			if(e.current == e.total && e.total > 1) {
 				list_wrap.css({
-					left: gap+"px"
+					left: gap + 'px'
 				});
 			} else {
 				list_wrap.css({
-					left: "0"
+					left: '0'
 				});
 			}
 		}
 	});
 	
-	$("#touchSlider9").touchSlider({
-		sidePage : true,
-		btn_prev : $(".touchSlider9_wrap").next().find(".btn_prev"),
-		btn_next : $(".touchSlider9_wrap").next().find(".btn_next")
+	$('#touchSlider9').touchSlider({
+		sidePage: true,
+		btn_prev: $('.touchSlider9_wrap').next().find('.btn_prev'),
+		btn_next: $('.touchSlider9_wrap').next().find('.btn_next')
 	});
 	
-	$("#touchSlider10").touchSlider({
-		sidePage : true,
-		btn_prev : $(".touchSlider10_wrap").next().find(".btn_prev"),
-		btn_next : $(".touchSlider10_wrap").next().find(".btn_next")
+	$('#touchSlider10').touchSlider({
+		sidePage: true,
+		btn_prev: $('.touchSlider10_wrap').next().find('.btn_prev'),
+		btn_next: $('.touchSlider10_wrap').next().find('.btn_next')
 	});
 	
 });
@@ -190,7 +195,7 @@ $(document).ready(function() {
 <p>좌우로 터치드래그~ jQuery 1.7+, IE 7+</p>
 <p><a href="https://github.com/dohoons/jquery.touchSlider" target="_blank">https://github.com/dohoons/jquery.touchSlider</a></p>
 
-<h2>1 : rolling, flexible, counter</h2>
+<h2>1 : rolling, counter</h2>
 <div id="touchSlider">
 	<ul>
 		<li>
@@ -236,7 +241,7 @@ $(document).ready(function() {
 	<button type="button" class="btn_next">next</button>
 </div>
 
-<h2>3 : multiple, view:3, limit</h2>
+<h2>3 : multiple, view:2, gap, limit</h2>
 <div id="touchSlider3">
 	<ul>
 		<li>
@@ -263,9 +268,6 @@ $(document).ready(function() {
 		<li style="background:#396">
 			content 8
 		</li>
-		<li style="background:#39C">
-			content 9
-		</li>
 	</ul>
 </div>
 <div class="btn_area">
@@ -273,7 +275,7 @@ $(document).ready(function() {
 	<button type="button" class="btn_next">next</button>
 </div>
 
-<h2>4 : multiple, view:3, rolling</h2>
+<h2>4 : multiple, view:3, gap, rolling</h2>
 <div id="touchSlider4">
 	<ul>
 		<li>
@@ -310,7 +312,7 @@ $(document).ready(function() {
 	<button type="button" class="btn_next">next</button>
 </div>
 
-<h2>5 : multiple, view:5, flexible, rolling</h2>
+<h2>5 : multiple, gap, breakpoint, rolling</h2>
 <div id="touchSlider5">
 	<ul>
 		<li>
@@ -350,7 +352,7 @@ $(document).ready(function() {
 	<button type="button" class="btn_next">next</button>
 </div>
 
-<h2>6 : flexible, rolling, paging, counter</h2>
+<h2>6 : rolling, paging, counter</h2>
 <div id="touchSlider6">
 	<ul>
 		<li>
@@ -369,51 +371,51 @@ $(document).ready(function() {
 </div>
 <div class="paging"></div>
 
-<h2>7 : rolling, flexible, resize(default)</h2>
+<h2>7 : rolling, resize(default)</h2>
 <div id="touchSlider7">
 	<ul>
 		<li>
-			content 1<br />
-			content 1<br />
-			content 1<br />
-			content 1<br />
-			content 1<br />
-			content 1<br />
-			content 1<br />
-			content 1<br />
-			content 1<br />
-			content 1<br />
+			content 1<br>
+			content 1<br>
+			content 1<br>
+			content 1<br>
+			content 1<br>
+			content 1<br>
+			content 1<br>
+			content 1<br>
+			content 1<br>
+			content 1<br>
 		</li>
 		<li style="background:#396">
-			content 2<br />
-			content 2<br />
-			content 2<br />
-			content 2<br />
-			content 2<br />
+			content 2<br>
+			content 2<br>
+			content 2<br>
+			content 2<br>
+			content 2<br>
 		</li>
 		<li style="background:#39C">
-			content 3<br />
-			content 3<br />
-			content 3<br />
-			content 3<br />
-			content 3<br />
-			content 3<br />
-			content 3<br />
-			content 3<br />
-			content 3<br />
-			content 3<br />
-			content 3<br />
-			content 3<br />
-			content 3<br />
+			content 3<br>
+			content 3<br>
+			content 3<br>
+			content 3<br>
+			content 3<br>
+			content 3<br>
+			content 3<br>
+			content 3<br>
+			content 3<br>
+			content 3<br>
+			content 3<br>
+			content 3<br>
+			content 3<br>
 		</li>
 		<li style="background:#33C">
-			content 4<br />
-			content 4<br />
-			content 4<br />
-			content 4<br />
-			content 4<br />
-			content 4<br />
-			content 4<br />
+			content 4<br>
+			content 4<br>
+			content 4<br>
+			content 4<br>
+			content 4<br>
+			content 4<br>
+			content 4<br>
 		</li>
 	</ul>
 </div>
@@ -422,7 +424,7 @@ $(document).ready(function() {
 	<button type="button" class="btn_next">next</button>
 </div>
 
-<h2>8 : limit, flexible, right-margin</h2>
+<h2>8 : limit, right-margin</h2>
 <div class="touchSlider8_wrap">
 	<div id="touchSlider8">
 		<ul>
@@ -446,7 +448,7 @@ $(document).ready(function() {
 	<button type="button" class="btn_next">next</button>
 </div>
 
-<h2>9 : roll, flexible, right-margin</h2>
+<h2>9 : roll, right-margin</h2>
 <div class="touchSlider9_wrap">
 	<div id="touchSlider9">
 		<ul>
@@ -488,7 +490,7 @@ $(document).ready(function() {
 	<button type="button" class="btn_next">next</button>
 </div>
 
-<h2>10: rolling, flexible, side-margin</h2>
+<h2>10: rolling, side-margin</h2>
 <div class="touchSlider10_wrap">
 	<div id="touchSlider10">
 		<ul>
@@ -530,6 +532,5 @@ $(document).ready(function() {
 	<button type="button" class="btn_next">next</button>
 </div>
 
-<br /><br /><br /><br /><br /><br />
 </body>
 </html>
