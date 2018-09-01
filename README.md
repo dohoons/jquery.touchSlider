@@ -45,7 +45,8 @@ require('jquery.touchslider')($);
 
 ``` js
 $("#touchSlider").touchSlider({
-	page : 2
+	// ... Options
+	page: 2
 });
 ```
 
@@ -73,7 +74,7 @@ $("#touchSlider").touchSlider({
 ## Method
 
 | Name | Description |
-| --- | --- | --- |
+| --- | --- |
 | go_page(index) | index 페이지로 이동 |
 | autoPlay() | 자동 넘김 시작  |
 | autoStop() | 자동 넘김 정지  |
@@ -82,6 +83,6 @@ $("#touchSlider").touchSlider({
 ## CallBack
 
 | Name | Description |
-| --- | --- | --- |
+| --- | --- |
 | initComplete | 슬라이더가 초기화된 후 시작 |
 | counter | 슬라이더를 넘긴 후 시작  |
