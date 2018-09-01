@@ -1,6 +1,6 @@
 {
   "name": "jquery.touchslider",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "A jQuery plugin that makes it easy to create touch sliders.",
 	"keywords": [
 		"touchSlider",
