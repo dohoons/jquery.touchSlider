@@ -18,7 +18,8 @@
  *		transition		-	CSS3 transition 사용 (default true)
  *		btn_prev		-	prev 버튼 (jQuery Object, default null)
  *		btn_next		-	next 버튼 (jQuery Object, default null)
- *		paging			-	page 버튼 (jQuery Object, default null)
+ *		controls		-	prev, next 버튼 생성 (default true)
+ *		paging			-	page control 생성 (default true)
  *		sidePage		-	사이드 페이지 사용 (default false)
  *		initComplete 	-	초기화 콜백
  *		counter			-	슬라이드 콜백, 카운터
@@ -27,9 +28,8 @@
  *
  * @example
  
-	$('#target').touchSlider({
-		page : 2
-	});
+	$('#target').touchSlider();
+	$('.multi-target').touchSlider();
 
 */
 
@@ -58,7 +58,8 @@
 			resize: true,
 			btn_prev: null,
 			btn_next: null,
-			paging: null,
+			controls: true,
+			paging: true,
 			speed: 150,
 			view: 1,
 			gap: 0,
@@ -75,8 +76,7 @@
 				addHoverTarget: '',
 				interval: 3500
 			},
-			breakpoints: null,
-			supportsCssTransitions: 'transition' in document.documentElement.style || 'WebkitTransition' in document.documentElement.style
+			breakpoints: null
 		};
 		
 		var opts = $.extend(true, {}, $.fn.touchSlider.defaults, settings);
@@ -113,6 +113,11 @@
 	
 	};
 	
+	var env = {
+		isIE11: navigator.userAgent.indexOf('Trident/7.') > -1,
+		supportsCssTransitions: 'transition' in document.documentElement.style || 'WebkitTransition' in document.documentElement.style
+	};
+	
 	var touchSlider = {
 		
 		init: function() {
@@ -121,7 +126,7 @@
 			this._view = this.opts.view;
 			this._speed = this.opts.speed;
 			this._tg = $(this);
-			this._list_wrap = this._tg.children();
+			this._list_wrap = this._tg.children().eq(0);
 			this._list_wrap.find('.blank').remove();
 			this._list = this._list_wrap.children();
 			this._width = parseInt(this._tg.css('width'));
@@ -138,8 +143,6 @@
 			this._link = true;
 			this._scroll = false;
 			this._hover_tg = [];
-			this._btn_prev = null;
-			this._btn_next = null;
 			this._timer = null;
 			
 			this._tg
@@ -160,7 +163,7 @@
 					.on('mousedown', this.touchstart);
 			}
 
-			this._tg.children().css({
+			this._list_wrap.css({
 				width: this._width + 'px',
 				overflow: 'visible'
 			});
@@ -178,7 +181,7 @@
 						this._list.parent().append(blank.clone());
 					}
 				}
-				this._list = this._tg.children().children();
+				this._list = this._list_wrap.children();
 				this._len = (this._list.length / this._view) * this._view;
 			}
 			
@@ -204,28 +207,48 @@
 			}
 			
 			if(this.opts.btn_prev && this.opts.btn_next) {
-				this.opts.btn_prev.off('click').on('click', function() {
+				this.opts.btn_prev.off('click').on('click', function(e) {
 					_this.animate(1, true);
-					return false;
+					e.preventDefault();
 				});
-				this.opts.btn_next.off('click').on('click', function() {
+				this.opts.btn_next.off('click').on('click', function(e) {
 					_this.animate(-1, true);
-					return false;
+					e.preventDefault();
 				});
 			}
 			
+			this._controls = $('<div class="ts-controls"></div>');
+
+			this._tg.nextAll('.ts-controls:eq(0)').remove();
+			
 			if(this.opts.paging) {
-				$(this._list).each(function(i) {
-					var btn_page = _this.opts.paging.eq(0).clone();
-					_this.opts.paging.before(btn_page);
-					
-					btn_page.off('click').on('click', function() {
-						this.go_page(i);
-						return false;
-					});
-				});
+				this._controls.append('<div class="ts-paging"></div>');
+				this._tg.after(this._controls);
+
+				var paging = '';
+				var len = Math.ceil(this._len / this._view);
 				
-				this.opts.paging.remove();
+				for(var i=1; i<=len; ++i) {
+					paging += '<button type="button" class="ts-paging-btn">page' + i + '</button>';
+				}
+
+				this._pagingBtn = $(paging);
+
+				this._controls.find('.ts-paging').html(this._pagingBtn).on('click', function(e) {
+					_this.go_page($(e.target).index());
+				});
+			}
+			
+			if(this.opts.controls) {
+				this._controls.append('<button type="button" class="ts-prev">Prev</button><button type="button" class="ts-next">Next</button>');
+				this._tg.after(this._controls);
+
+				this._controls.find('.ts-prev, .ts-next').on('click', function(e) {
+					_this.animate($(this).hasClass('ts-prev') ? 1 : -1, true);
+					e.preventDefault();
+				}).on('touchstart mousedown touchend mouseup', function(e) {
+					e.stopPropagation();
+				});
 			}
 			
 			if(this.opts.autoplay.enable) {
@@ -260,7 +283,7 @@
 			
 			this._tg.off('click').on('click', 'a', function() {
 				if(!_this._link) {
-					return false;
+					e.preventDefault();
 				}
 			});
 			
@@ -491,7 +514,7 @@
 			var list_wrap = this._list_wrap;
 			var list_wrap_gap = 0;
 
-			if(this.opts.supportsCssTransitions && this.opts.transition) {
+			if(env.supportsCssTransitions && this.opts.transition) {
 				if(obj.speed === undefined) {
 					obj.tg.css(transStyle);
 				} else {
@@ -514,13 +537,20 @@
 							'transform': 'none'
 						});
 
-						list_wrap.css({
+						list_wrap.css(env.isIE11 ? {
+							transition: 'none',
+							transform: 'none',
+							left: list_wrap_gap + 'px'
+						} : {
 							transition: 'none',
 							transform: 'translate3d(' + list_wrap_gap + 'px,0,0)'
 						});
 
 						setTimeout(function() {
-							list_wrap.css({
+							list_wrap.css(env.isIE11 ? {
+								transition: obj.speed + 'ms ease',
+								left: '0'
+							} : {
 								transition: obj.speed + 'ms ease',
 								transform: 'translate3d(0,0,0)'
 							});
@@ -620,6 +650,10 @@
 				this._tg.css({
 					height: this._list.eq(this.opts.page-1).height() + 'px'
 				});
+			}
+			
+			if(this.opts.paging) {
+				this._pagingBtn.eq(currentPage.current - 1).addClass('ts-paging-active').siblings().removeClass('ts-paging-active');
 			}
 			
 			if(typeof(this.opts.counter) == 'function') {
