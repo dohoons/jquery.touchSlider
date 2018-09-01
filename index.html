@@ -9,185 +9,22 @@
 <style>
 body { box-sizing: border-box; max-width:750px; height: auto; margin:0 auto; padding: 20px 10px 100px; }
 h1 { font-size:16px; font-weight:bold; }
-h2 { margin-top:10px; text-align:center; }
+h2 { margin:30px 0 10px; text-align:center; font-size: 14px; font-weight: bold; }
 
-#touchSlider { background:#ccc; position:relative; overflow:hidden; }
-#touchSlider ul { position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
+.ts-controls { height: 36px; background:#f5f5f5; position: relative; overflow: hidden; }
+.ts-prev { display:block; width:100px; height:36px; background:#000; font-size:16px; color:#fff; font-weight:bold; position:absolute; top:0; left:0; }
+.ts-next { display:block; width:100px; height:36px; background:#000; font-size:16px; color:#fff; font-weight:bold; position:absolute; top:0; right:0; }
 
-#touchSlider2 { background:#ccc; position:relative; overflow:hidden; }
-#touchSlider2 ul { position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider2 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
-
-#touchSlider3 { background:#ccc; position:relative; overflow:hidden; }
-#touchSlider3 ul { position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider3 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
-
-#touchSlider4 { background:#ccc; position:relative; overflow:hidden; }
-#touchSlider4 ul { position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider4 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
-
-#touchSlider5 { background:#ccc; position:relative; overflow:hidden; }
-#touchSlider5 ul { position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider5 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
-
-#touchSlider6 { background:#ccc; position:relative; overflow:hidden; }
-#touchSlider6 ul { position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider6 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
-
-#touchSlider7 { background:#ccc; position:relative; overflow:hidden; }
-#touchSlider7 ul { position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider7 ul li { background:#9C9; font-size:14px; color:#fff; }
-
-.touchSlider8_wrap { background:#ccc; overflow:hidden; }
-#touchSlider8 { height:150px; margin-right:10%; position:relative; overflow:visible; }
-#touchSlider8 ul { position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider8 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
-
-.touchSlider9_wrap { background:#ccc; overflow:hidden; }
-#touchSlider9 { margin-right:10%; position:relative; overflow:visible; }
-#touchSlider9 ul { position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider9 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
-
-.touchSlider10_wrap { background:#ccc; overflow:hidden; }
-#touchSlider10 { margin:0 10%; position:relative; overflow:visible; }
-#touchSlider10 ul { position:absolute; top:0; left:0; overflow:hidden; }
-#touchSlider10 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
-
-.btn_area { background:#f5f5f5; text-align:center; overflow:hidden; }
-.btn_area button { display:block; width:100px; height:36px; background:#000; font-size:16px; color:#fff; font-weight:bold; }
-.btn_area button.btn_prev { float:left; }
-.btn_area button.btn_next { float:right; }
-.paging { background:#f5f5f5; text-align:center; overflow:hidden; }
-.paging .btn_page { display:inline-block; width:10px; height:10px; margin:3px; font-size:0px; line-height:0; text-indent:-9999px; background:#3399CC; }
-.paging .btn_page.on { background:#ff0000; }
+.ts-paging { width:100%; text-align:center; position:absolute; top:12px; left:0; }
+.ts-paging-btn { display:inline-block; width:10px; height:0; max-height:10px; padding-top:10px; margin-left:7px; border-radius:5px; background:#3399CC; overflow: hidden; }
+.ts-paging-btn:first-child { margin-left: 0; }
+.ts-paging-active { background:#ff0000; }
 </style>
 
 <!-- jQuery 1.7+, IE 7+ -->
 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="jquery.touchSlider.js"></script>
 
-<script>
-//<![CDATA[
-$(document).ready(function() {
-	
-	$('#touchSlider').touchSlider({
-		/*
-		autoplay : {
-			enable : true,
-			pauseHover : true,
-			addHoverTarget : '', // 다른 오버영역 추가 ex) '.someBtn, .someContainer'
-			interval : 3500
-		},
-		*/
-		btn_prev: $('#touchSlider').next().find('.btn_prev'),
-		btn_next: $('#touchSlider').next().find('.btn_next'),
-		counter: function(e) {
-			$('#count').html('current : ' + e.current + ', total : ' + e.total);
-		}
-	});
-	
-	$('#touchSlider2').touchSlider({
-		roll: false,
-		page: 2,
-		speed: 300,
-		btn_prev: $('#touchSlider2').next().find('.btn_prev'),
-		btn_next: $('#touchSlider2').next().find('.btn_next')
-	});
-	
-	$('#touchSlider3').touchSlider({
-		roll: false,
-		view: 2,
-		gap: 20,
-		btn_prev: $('#touchSlider3').next().find('.btn_prev'),
-		btn_next: $('#touchSlider3').next().find('.btn_next')
-	});
-	
-	$('#touchSlider4').touchSlider({
-		view: 3,
-		gap: 20,
-		btn_prev: $('#touchSlider4').next().find('.btn_prev'),
-		btn_next: $('#touchSlider4').next().find('.btn_next')
-	});
-	
-	$('#touchSlider5').touchSlider({
-		view: 5,
-		gap: 20,
-		btn_prev: $('#touchSlider5').next().find('.btn_prev'),
-		btn_next: $('#touchSlider5').next().find('.btn_next'),
-		breakpoints: {
-			640: {
-				view: 3,
-				gap: 15
-			},
-			375: {
-				view: 2,
-				gap: 10
-			}
-		}
-	});
-	
-	$('#touchSlider6').touchSlider({
-		initComplete: function(e) {
-			var _this = this;
-			var $this = $(this);
-			var paging = $this.next('.paging');
-			var len = Math.ceil(this._len / this._view);
-			
-			paging.html('');
-			for(var i = 1; i <= len; i++) {
-				paging.append('<button type="button" class="btn_page">page' + i + '</button>');
-			}
-
-			paging.find('.btn_page').on('click', function(e) {
-				_this.go_page($(this).index());
-			});
-		},
-		counter: function(e) {
-			$(this).next('.paging').find('.btn_page').removeClass('on').eq(e.current-1).addClass('on');
-		}
-	});
-	
-	$('#touchSlider7').touchSlider({
-		btn_prev: $('#touchSlider7').next().find('.btn_prev'),
-		btn_next: $('#touchSlider7').next().find('.btn_next')
-	});
-	
-	$('#touchSlider8').touchSlider({
-		roll: false,
-		btn_prev: $('.touchSlider8_wrap').next().find('.btn_prev'),
-		btn_next: $('.touchSlider8_wrap').next().find('.btn_next'),
-		counter: function(e) {
-			var $this = $(this);
-			var list_wrap = $this.children();
-			var gap = $this.parent().width() - this._item_w;
-			if(e.current == e.total && e.total > 1) {
-				list_wrap.css({
-					left: gap + 'px'
-				});
-			} else {
-				list_wrap.css({
-					left: '0'
-				});
-			}
-		}
-	});
-	
-	$('#touchSlider9').touchSlider({
-		sidePage: true,
-		btn_prev: $('.touchSlider9_wrap').next().find('.btn_prev'),
-		btn_next: $('.touchSlider9_wrap').next().find('.btn_next')
-	});
-	
-	$('#touchSlider10').touchSlider({
-		sidePage: true,
-		btn_prev: $('.touchSlider10_wrap').next().find('.btn_prev'),
-		btn_next: $('.touchSlider10_wrap').next().find('.btn_next')
-	});
-	
-});
-//]]>
-</script>
 </head>
 
 <body>
@@ -195,7 +32,16 @@ $(document).ready(function() {
 <p>좌우로 터치드래그~ jQuery 1.7+, IE 7+</p>
 <p><a href="https://github.com/dohoons/jquery.touchSlider" target="_blank">https://github.com/dohoons/jquery.touchSlider</a></p>
 
-<h2>1 : rolling, counter</h2>
+<!-- ####################################################################### -->
+
+<h2>1 : default</h2>
+
+<style>
+#touchSlider { background:#ccc; position:relative; overflow:hidden; }
+#touchSlider ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
+</style>
+
 <div id="touchSlider">
 	<ul>
 		<li>
@@ -212,14 +58,21 @@ $(document).ready(function() {
 		</li>
 	</ul>
 </div>
-<div class="btn_area">
-	<button type="button" class="btn_prev">prev</button>
-	<button type="button" class="btn_next">next</button>
-	<div id="count" style="height:36px; font-size:16px; line-height:36px; text-align:center;">
-	</div>
-</div>
+
+<script>
+$('#touchSlider').touchSlider();
+</script>
+
+<!-- ####################################################################### -->
 
 <h2>2 : limit, page:2, speed:300</h2>
+
+<style>
+#touchSlider2 { background:#ccc; position:relative; overflow:hidden; }
+#touchSlider2 ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider2 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
+</style>
+
 <div id="touchSlider2">
 	<ul>
 		<li>
@@ -236,12 +89,25 @@ $(document).ready(function() {
 		</li>
 	</ul>
 </div>
-<div class="btn_area">
-	<button type="button" class="btn_prev">prev</button>
-	<button type="button" class="btn_next">next</button>
-</div>
+
+<script>
+$('#touchSlider2').touchSlider({
+	roll: false,
+	page: 2,
+	speed: 300
+});
+</script>
+
+<!-- ####################################################################### -->
 
 <h2>3 : multiple, view:2, gap, limit</h2>
+
+<style>
+#touchSlider3 { background:#ccc; position:relative; overflow:hidden; }
+#touchSlider3 ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider3 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
+</style>
+
 <div id="touchSlider3">
 	<ul>
 		<li>
@@ -270,12 +136,25 @@ $(document).ready(function() {
 		</li>
 	</ul>
 </div>
-<div class="btn_area">
-	<button type="button" class="btn_prev">prev</button>
-	<button type="button" class="btn_next">next</button>
-</div>
 
-<h2>4 : multiple, view:3, gap, rolling</h2>
+<script>
+$('#touchSlider3').touchSlider({
+	roll: false,
+	view: 2,
+	gap: 20,
+});
+</script>
+
+<!-- ####################################################################### -->
+
+<h2>4 : multiple, view:3, gap</h2>
+
+<style>
+#touchSlider4 { background:#ccc; position:relative; overflow:hidden; }
+#touchSlider4 ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider4 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
+</style>
+
 <div id="touchSlider4">
 	<ul>
 		<li>
@@ -307,12 +186,24 @@ $(document).ready(function() {
 		</li>
 	</ul>
 </div>
-<div class="btn_area">
-	<button type="button" class="btn_prev">prev</button>
-	<button type="button" class="btn_next">next</button>
-</div>
 
-<h2>5 : multiple, gap, breakpoint, rolling</h2>
+<script>
+$('#touchSlider4').touchSlider({
+	view: 3,
+	gap: 20,
+});
+</script>
+
+<!-- ####################################################################### -->
+
+<h2>5 : multiple, gap, breakpoint</h2>
+
+<style>
+#touchSlider5 { background:#ccc; position:relative; overflow:hidden; }
+#touchSlider5 ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider5 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
+</style>
+
 <div id="touchSlider5">
 	<ul>
 		<li>
@@ -347,12 +238,42 @@ $(document).ready(function() {
 		</li>
 	</ul>
 </div>
-<div class="btn_area">
-	<button type="button" class="btn_prev">prev</button>
-	<button type="button" class="btn_next">next</button>
-</div>
 
-<h2>6 : rolling, paging, counter</h2>
+<script>
+$('#touchSlider5').touchSlider({
+	view: 5,
+	gap: 20,
+	breakpoints: {
+		640: {
+			view: 3,
+			gap: 15
+		},
+		375: {
+			view: 2,
+			gap: 10
+		}
+	}
+});
+</script>
+
+<!-- ####################################################################### -->
+
+<h2>6 :  custom controls</h2>
+
+<style>
+#touchSlider6 { background:#ccc; position:relative; overflow:hidden; }
+#touchSlider6 ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider6 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
+.slider-controls { height:72px; background:#f5f5f5; position:relative; overflow:hidden; }
+.slider-controls .prev { display:block; width:100px; height:36px; background:darkblue; font-size:16px; color:#fff; font-weight:bold; position:absolute; top:0; left:0; }
+.slider-controls .next { display:block; width:100px; height:36px; background:darkblue; font-size:16px; color:#fff; font-weight:bold; position:absolute; top:0; right:0; }
+.slider-controls .paging { box-sizing:border-box; width:100%; height:36px; padding-top:8px; text-align:center; }
+.slider-controls .page { display:inline-block; width:20px; height:0; max-height:20px; padding-top:18px; margin-left:7px; border-radius:10px; background:#fff; border:1px solid #ccc; overflow:hidden; }
+.slider-controls .page:first-child { margin-left:0; }
+.slider-controls .page.on { background:darkblue; border-color:darkblue }
+.slider-count { height:36px; font-size:16px; line-height:36px; text-align:center; background:#f5f5f5; }
+</style>
+
 <div id="touchSlider6">
 	<ul>
 		<li>
@@ -369,9 +290,49 @@ $(document).ready(function() {
 		</li>
 	</ul>
 </div>
-<div class="paging"></div>
+<div class="slider-controls">
+	<button type="button" class="prev">prev</button>
+	<button type="button" class="next">next</button>
+	<div class="paging"></div>
+	<div class="slider-count"></div>
+</div>
 
-<h2>7 : rolling, resize(default)</h2>
+<script>
+$('#touchSlider6').touchSlider({
+	controls: false,
+	paging: false,
+	btn_prev: $('#touchSlider6').next().find('.prev'),
+	btn_next: $('#touchSlider6').next().find('.next'),
+	initComplete: function(e) {
+		var _this = this;
+		var paging = '';
+		var len = Math.ceil(this._len / this._view);
+
+		for(var i = 1; i <= len; i++) {
+			paging += '<button type="button" class="page">page' + i + '</button>';
+		}
+
+		$(this).next().find('.paging').html(paging).find('.page').on('click', function(e) {
+			_this.go_page($(this).index());
+		});
+	},
+	counter: function(e) {
+		$(this).next().find('.page').removeClass('on').eq(e.current-1).addClass('on');
+		$(this).next().find('.slider-count').html('current : ' + e.current + ', total : ' + e.total);
+	}
+});
+</script>
+
+<!-- ####################################################################### -->
+
+<h2>7 : auto size(default)</h2>
+
+<style>
+#touchSlider7 { background:#ccc; position:relative; overflow:hidden; }
+#touchSlider7 ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider7 ul li { background:#9C9; font-size:14px; color:#fff; }
+</style>
+
 <div id="touchSlider7">
 	<ul>
 		<li>
@@ -419,12 +380,22 @@ $(document).ready(function() {
 		</li>
 	</ul>
 </div>
-<div class="btn_area">
-	<button type="button" class="btn_prev">prev</button>
-	<button type="button" class="btn_next">next</button>
-</div>
+
+<script>
+$('#touchSlider7').touchSlider();
+</script>
+
+<!-- ####################################################################### -->
 
 <h2>8 : limit, right-margin</h2>
+
+<style>
+.touchSlider8_wrap { background:#ccc; overflow:hidden; }
+#touchSlider8 { height:150px; margin-right:10%; position:relative; overflow:visible; }
+#touchSlider8 ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider8 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
+</style>
+
 <div class="touchSlider8_wrap">
 	<div id="touchSlider8">
 		<ul>
@@ -443,12 +414,38 @@ $(document).ready(function() {
 		</ul>
 	</div>
 </div>
-<div class="btn_area">
-	<button type="button" class="btn_prev">prev</button>
-	<button type="button" class="btn_next">next</button>
-</div>
+
+<script>
+$('#touchSlider8').touchSlider({
+	roll: false,
+	counter: function(e) {
+		var $this = $(this);
+		var list_wrap = $this.children();
+		var gap = $this.parent().width() - this._item_w;
+		if(e.current == e.total && e.total > 1) {
+			list_wrap.css({
+				left: gap + 'px'
+			});
+		} else {
+			list_wrap.css({
+				left: '0'
+			});
+		}
+	}
+});
+</script>
+
+<!-- ####################################################################### -->
 
 <h2>9 : roll, right-margin</h2>
+
+<style>
+.touchSlider9_wrap { background:#ccc; overflow:hidden; }
+#touchSlider9 { margin-right:10%; position:relative; overflow:visible; }
+#touchSlider9 ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider9 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
+</style>
+
 <div class="touchSlider9_wrap">
 	<div id="touchSlider9">
 		<ul>
@@ -485,12 +482,24 @@ $(document).ready(function() {
 		</ul>
 	</div>
 </div>
-<div class="btn_area">
-	<button type="button" class="btn_prev">prev</button>
-	<button type="button" class="btn_next">next</button>
-</div>
 
-<h2>10: rolling, side-margin</h2>
+<script>
+$('#touchSlider9').touchSlider({
+	sidePage: true
+});
+</script>
+
+<!-- ####################################################################### -->
+
+<h2>10: side-margin</h2>
+
+<style>
+.touchSlider10_wrap { background:#ccc; overflow:hidden; }
+#touchSlider10 { margin:0 10%; position:relative; overflow:visible; }
+#touchSlider10 ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider10 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
+</style>
+
 <div class="touchSlider10_wrap">
 	<div id="touchSlider10">
 		<ul>
@@ -527,10 +536,50 @@ $(document).ready(function() {
 		</ul>
 	</div>
 </div>
-<div class="btn_area">
-	<button type="button" class="btn_prev">prev</button>
-	<button type="button" class="btn_next">next</button>
+
+<script>
+$('#touchSlider10').touchSlider({
+	sidePage: true
+});
+</script>
+
+<!-- ####################################################################### -->
+
+<h2>11 : auto play</h2>
+
+<style>
+#touchSlider11 { background:#ccc; position:relative; overflow:hidden; }
+#touchSlider11 ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider11 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
+</style>
+
+<div id="touchSlider11">
+	<ul>
+		<li>
+			content 1
+		</li>
+		<li style="background:#396">
+			content 2
+		</li>
+		<li style="background:#39C">
+			content 3
+		</li>
+		<li style="background:#33C">
+			content 4
+		</li>
+	</ul>
 </div>
+
+<script>
+$('#touchSlider11').touchSlider({
+	autoplay : {
+		enable : true,
+		pauseHover : true,
+		addHoverTarget : '', // 다른 오버영역 추가 ex) '.someBtn, .someContainer'
+		interval : 3500
+	}
+});
+</script>
 
 </body>
 </html>
