@@ -301,7 +301,7 @@
 				this.animate(-1, true, 0);
 				this.animate(1, true, 0);
 			}
-			if(typeof(this.opts.initComplete) == 'function') {
+			if(typeof this.opts.initComplete == 'function') {
 				this.opts.initComplete.call(this,this);
 			}
 		},
@@ -656,7 +656,7 @@
 				this._pagingBtn.eq(currentPage.current - 1).addClass('ts-paging-active').siblings().removeClass('ts-paging-active');
 			}
 			
-			if(typeof(this.opts.counter) == 'function') {
+			if(typeof this.opts.counter == 'function') {
 				this.opts.counter.call(this, currentPage);
 			}
 		},
