@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.5.0
+ * @version	1.5.1
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -281,7 +281,7 @@
 				this.autoPlay();
 			}
 			
-			this._tg.off('click').on('click', 'a', function() {
+			this._tg.off('click').on('click', 'a', function(e) {
 				if(!_this._link) {
 					e.preventDefault();
 				}
