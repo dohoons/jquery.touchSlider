@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.5.1
+ * @version	1.5.2
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -362,9 +362,6 @@
 		},
 		
 		touchstart: function(e) {
-			if(e.target.tagName === 'IMG') {
-				e.preventDefault();
-			}
 			if(!this.opts.propagation) {
 				e.stopPropagation();
 			}
