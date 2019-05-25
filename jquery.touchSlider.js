@@ -2,10 +2,11 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.5.2
+ * @version	1.6.0
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
+ *		mode			-	슬라이드 모드, ('swipe' or 'fade') (default 'swipe')
  *		useMouse		-	마우스 드래그 사용 (default true)
  *		roll			-	순환 (default true)
  *		flexible		-	유동 레이아웃 (default true)
@@ -52,6 +53,7 @@
 	$.fn.touchSlider = function(settings) {
 		
 		$.fn.touchSlider.defaults = {
+			mode: 'swipe',
 			useMouse: true,
 			roll: true,
 			flexible: true,
@@ -417,10 +419,12 @@
 				for(var i=0, len=this._len; i<len; ++i) {
 					var tmp = this._start[i] + this._left;
 					
-					this.move({
-						tg: this._list.eq(i),
-						to: tmp
-					});
+					if(this.opts.mode === 'swipe') {
+						this.move({
+							tg: this._list.eq(i),
+							to: tmp
+						});
+					}
 					
 					this._pos[i] = tmp;
 				}
@@ -510,55 +514,80 @@
 			};
 			var list_wrap = this._list_wrap;
 			var list_wrap_gap = 0;
-
-			if(env.supportsCssTransitions && this.opts.transition) {
-				if(obj.speed === undefined) {
-					obj.tg.css(transStyle);
-				} else {
-					if(obj.btn_click) {
-						setTimeout(function() {
-							obj.tg.css(transStyle);
-						}, 10);
+			var isTransition = env.supportsCssTransitions && this.opts.transition;
+			
+			if(this.opts.mode === 'swipe') {
+				if(isTransition) {
+					if(obj.speed === undefined) {
+						obj.tg.css(transStyle);
 					} else {
-						list_wrap_gap = (obj.gap > 0) ? -(obj.to - obj.from) : obj.from - obj.to;
+						if(obj.btn_click) {
+							setTimeout(function() {
+								obj.tg.css(transStyle);
+							}, 10);
+						} else {
+							list_wrap_gap = (obj.gap > 0) ? -(obj.to - obj.from) : obj.from - obj.to;
 
-						obj.tg.css({
-							'left': obj.to + 'px',
-							'-moz-transition': 'none',
-							'-moz-transform': 'none',
-							'-ms-transition': 'none',
-							'-ms-transform': 'none',
-							'-webkit-transition': 'none',
-							'-webkit-transform': 'none',
-							'transition': 'none',
-							'transform': 'none'
-						});
-
-						list_wrap.css(env.isIE11 ? {
-							transition: 'none',
-							transform: 'none',
-							left: list_wrap_gap + 'px'
-						} : {
-							transition: 'none',
-							transform: 'translate3d(' + list_wrap_gap + 'px,0,0)'
-						});
-
-						setTimeout(function() {
-							list_wrap.css(env.isIE11 ? {
-								transition: obj.speed + 'ms ease',
-								left: '0'
-							} : {
-								transition: obj.speed + 'ms ease',
-								transform: 'translate3d(0,0,0)'
+							obj.tg.css({
+								'left': obj.to + 'px',
+								'-moz-transition': 'none',
+								'-moz-transform': 'none',
+								'-ms-transition': 'none',
+								'-ms-transform': 'none',
+								'-webkit-transition': 'none',
+								'-webkit-transform': 'none',
+								'transition': 'none',
+								'transform': 'none'
 							});
-						}, 10);
+
+							list_wrap.css(env.isIE11 ? {
+								transition: 'none',
+								transform: 'none',
+								left: list_wrap_gap + 'px'
+							} : {
+								transition: 'none',
+								transform: 'translate3d(' + list_wrap_gap + 'px,0,0)'
+							});
+
+							setTimeout(function() {
+								list_wrap.css(env.isIE11 ? {
+									transition: obj.speed + 'ms ease',
+									left: '0'
+								} : {
+									transition: obj.speed + 'ms ease',
+									transform: 'translate3d(0,0,0)'
+								});
+							}, 10);
+						}
+					}
+				} else {
+					if(obj.speed === undefined) {
+						obj.tg.css('left', obj.to + 'px');
+					} else {
+						obj.tg.stop().animate({'left': obj.to + 'px'}, obj.speed);
 					}
 				}
-			} else {
-				if(obj.speed === undefined) {
-					obj.tg.css('left', obj.to + 'px');
+			} else if(this.opts.mode === 'fade') {
+				if(obj.to >= 0 && obj.to < this._width) {
+					obj.tg.stop().css(
+						isTransition ? {
+							opacity: 0,
+							zIndex: 2,
+							transition: 'none',
+							transform: 'translate3d(' + obj.to + 'px,0,0)'
+						} : {
+							zIndex: 2,
+							left: obj.to + 'px'
+						}
+					).animate({
+						opacity: 1
+					}, obj.speed);
 				} else {
-					obj.tg.stop().animate({'left': obj.to + 'px'}, obj.speed);
+					obj.tg.stop().css({
+						zIndex: 1
+					}).animate({
+						opacity: 0
+					}, obj.speed);
 				}
 			}
 		},

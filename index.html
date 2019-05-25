@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>Flick Navigation</title>
+<title>Flick Navigation (jQuery.touchSlider, dohoons)</title>
 <link rel="stylesheet" href="common.css">
 <style>
 body { box-sizing: border-box; max-width:750px; height: auto; margin:0 auto; padding: 20px 10px 100px; }
@@ -141,7 +141,7 @@ $('#touchSlider2').touchSlider({
 $('#touchSlider3').touchSlider({
 	roll: false,
 	view: 2,
-	gap: 20,
+	gap: 20
 });
 </script>
 
@@ -190,7 +190,7 @@ $('#touchSlider3').touchSlider({
 <script>
 $('#touchSlider4').touchSlider({
 	view: 3,
-	gap: 20,
+	gap: 20
 });
 </script>
 
@@ -578,6 +578,40 @@ $('#touchSlider11').touchSlider({
 		addHoverTarget: '', // 다른 오버영역 추가 ex) '.someBtn, .someContainer'
 		interval: 3500
 	}
+});
+</script>
+
+<!-- ####################################################################### -->
+
+<h2>12 : fade mode</h2>
+
+<style>
+#touchSlider12 { background:#ccc; position:relative; overflow:hidden; }
+#touchSlider12 ul { position:absolute; top:0; left:0; overflow:hidden; }
+#touchSlider12 ul li { height:150px; background:#9C9; font-size:14px; color:#fff; }
+</style>
+
+<div id="touchSlider12">
+	<ul>
+		<li>
+			content 1
+		</li>
+		<li style="background:#396">
+			content 2
+		</li>
+		<li style="background:#39C">
+			content 3
+		</li>
+		<li style="background:#33C">
+			content 4
+		</li>
+	</ul>
+</div>
+
+<script>
+$('#touchSlider12').touchSlider({
+	mode: 'fade',
+	speed: 600
 });
 </script>
 
