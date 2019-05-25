@@ -10,12 +10,12 @@ http://dohoons.com/test/flick
 
 ## 설치 방법
 
-### \<script\> 태그 추가
+### \<script\> 태그로 웹페이지에 추가
 ``` html
 <script src="jquery.touchSlider.js"></script>
 ```
 
-### NPM
+### 또는 NPM으로 설치해서 사용
 
 ``` sh
 $ npm i jquery.touchslider
@@ -54,6 +54,7 @@ $("#touchSlider").touchSlider({
 
 | Option Name | Defaut | Description |
 | --- | --- | --- |
+| mode | 'swipe' | 슬라이드 모드 ('swipe' or 'fade') |
 | useMouse | true | 마우스 드래그 사용 여부 |
 | page | 1 | 초기 페이지 |
 | roll | true | 슬라이드 넘김 순환 |
