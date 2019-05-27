@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.6.0
+ * @version	1.6.1
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -85,6 +85,7 @@
 
 		if(opts.breakpoints) {
 			opts.breakpoints.defaultOption = {
+				mode: opts.mode,
 				roll: opts.roll,
 				flexible: opts.flexible,
 				speed: opts.speed,
@@ -308,7 +309,7 @@
 			}
 		},
 		
-		resize: function() {			
+		resize: function() {
 			if(this.opts.flexible) {
 				var tmp_w = this._item_w;
 
@@ -330,6 +331,7 @@
 					this._start[i] = (this._start[i] - gap) / tmp_w * this._item_w + gap;
 
 					this.move({
+						dir: 0,
 						tg: this._list.eq(i),
 						to: this._pos[i]
 					});
@@ -503,6 +505,7 @@
 			var transform = 'translate3d(' + obj.to + 'px,0,0)';
 			var transStyle = {
 				'left': '0',
+				'opacity': '1',
 				'-moz-transition': transition,
 				'-moz-transform': transform,
 				'-ms-transition': transition,
@@ -519,7 +522,7 @@
 			if(this.opts.mode === 'swipe') {
 				if(isTransition) {
 					if(obj.speed === undefined) {
-						obj.tg.css(transStyle);
+						obj.tg.stop().css(transStyle);
 					} else {
 						if(obj.btn_click) {
 							setTimeout(function() {
@@ -530,6 +533,7 @@
 
 							obj.tg.css({
 								'left': obj.to + 'px',
+								'opacity': '1',
 								'-moz-transition': 'none',
 								'-moz-transform': 'none',
 								'-ms-transition': 'none',
@@ -562,20 +566,29 @@
 					}
 				} else {
 					if(obj.speed === undefined) {
-						obj.tg.css('left', obj.to + 'px');
+						obj.tg.stop().css({
+							'left': obj.to + 'px',
+							'opacity': '1'
+						});
 					} else {
-						obj.tg.stop().animate({'left': obj.to + 'px'}, obj.speed);
+						obj.tg.stop().animate({
+							'left': obj.to + 'px',
+							'opacity': '1'
+						}, obj.speed);
 					}
 				}
 			} else if(this.opts.mode === 'fade') {
+				var isNotMove = obj.dir === 0 || obj === undefined;
+
 				if(obj.to >= 0 && obj.to < this._width) {
 					obj.tg.stop().css(
 						isTransition ? {
-							opacity: 0,
+							opacity: isNotMove ? 1 : 0,
 							zIndex: 2,
 							transition: 'none',
 							transform: 'translate3d(' + obj.to + 'px,0,0)'
 						} : {
+							opacity: isNotMove ? 1 : 0,
 							zIndex: 2,
 							left: obj.to + 'px'
 						}
@@ -584,7 +597,8 @@
 					}, obj.speed);
 				} else {
 					obj.tg.stop().css({
-						zIndex: 1
+						zIndex: 1,
+						opacity: isNotMove ? 0 : null
 					}).animate({
 						opacity: 0
 					}, obj.speed);
@@ -592,15 +606,15 @@
 			}
 		},
 		
-		animate: function(d, btn_click, spd) {
+		animate: function(dir, btn_click, spd) {
 			if(this._drag || !this._scroll || btn_click) {
 				var speed = (spd > -1) ? spd : this._speed;
-				var gap = d * (this._item_w * this._view + this._view * this.opts.gap);
+				var gap = dir * (this._item_w * this._view + this._view * this.opts.gap);
 				var list = this._list;
 				var from = 0;
 				var to = 0;
 				
-				if(btn_click) this.position(d);
+				if(btn_click) this.position(dir);
 				if(this._left === 0 || (!this.opts.roll && this.limit_chk()) ) gap = 0;
 
 				for(var i=0, len = this._len; i<len; ++i) {
@@ -609,6 +623,7 @@
 					
 					this.move({
 						tg: list.eq(i),
+						dir: dir,
 						gap: gap,
 						from: from,
 						to: to,
@@ -617,7 +632,7 @@
 					});
 				}
 
-				if(d !== 0) {
+				if(dir !== 0) {
 					this.counter();
 				}
 			}
