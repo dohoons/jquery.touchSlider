@@ -518,6 +518,8 @@
 			var list_wrap = this._list_wrap;
 			var list_wrap_gap = 0;
 			var isTransition = env.supportsCssTransitions && this.opts.transition;
+
+			obj.tg.attr('aria-hidden', obj.to < 0 || obj.to >= this._width);
 			
 			if(this.opts.mode === 'swipe') {
 				if(isTransition) {
