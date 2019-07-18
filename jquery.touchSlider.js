@@ -132,10 +132,9 @@
 			this._list_wrap = this._tg.children().eq(0);
 			this._list_wrap.find('.blank').remove();
 			this._list = this._list_wrap.children();
-			this._width = parseInt(this._tg.css('width'));
-			this._item_w = parseInt(this._list.css('width'));
+			this._width = 0;
+			this._range = 0;
 			this._len = this._list.length;
-			this._range = this.opts.range * this._width;
 			this._pos = [];
 			this._start = [];
 			this._startX = 0;
@@ -149,29 +148,22 @@
 			this._timer = null;
 			
 			this._tg
-					.off('touchstart', this.touchstart)
-					.off('touchmove', this.touchmove)
-					.off('touchend', this.touchend)
-					.off('touchcancel', this.touchend)
-					.off('dragstart')
-					.on('dragstart', function(e) { e.preventDefault(); })
-					.on('touchstart', this.touchstart)
-					.on('touchmove', this.touchmove)
-					.on('touchend', this.touchend)
-					.on('touchcancel', this.touchend);
+				.off('touchstart', this.touchstart)
+				.off('touchmove', this.touchmove)
+				.off('touchend', this.touchend)
+				.off('touchcancel', this.touchend)
+				.off('dragstart')
+				.on('dragstart', function(e) { e.preventDefault(); })
+				.on('touchstart', this.touchstart)
+				.on('touchmove', this.touchmove)
+				.on('touchend', this.touchend)
+				.on('touchcancel', this.touchend);
 
 			if(this.opts.useMouse) {
 				this._tg
 					.off('mousedown', this.touchstart)
 					.on('mousedown', this.touchstart);
 			}
-
-			this._list_wrap.css({
-				width: this._width + 'px',
-				overflow: 'visible'
-			});
-			
-			if(this.opts.flexible) this._item_w = (this._width - (this._view - 1) * this.opts.gap) / this._view;
 
 			if(this.opts.roll) {
 				if(this._len / this._view <= 1) {
@@ -187,27 +179,8 @@
 				this._list = this._list_wrap.children();
 				this._len = (this._list.length / this._view) * this._view;
 			}
-			
-			var page_gap = (this.opts.page > 1 && this.opts.page <= this._len) ? (this.opts.page - 1) * (this._item_w * this._view + this._view * this.opts.gap) : 0;
-			
-			for(var i=0, len=this._len, gap=0; i<len; ++i) {
-				gap = this.opts.gap * i;
 
-				this._pos[i] = this._item_w * i - page_gap + gap;
-				this._start[i] = this._pos[i];
-
-				this._list.eq(i).css({
-					float: 'none',
-					position: 'absolute',
-					top: '0',
-					width: this._item_w + 'px'
-				});
-					
-				this.move({
-					tg: this._list.eq(i),
-					to: this._pos[i]
-				});
-			}
+			_this.setSize(_this.opts.page);
 			
 			if(this.opts.btn_prev && this.opts.btn_next) {
 				this.opts.btn_prev.off('click').on('click', function(e) {
@@ -300,42 +273,54 @@
 		},
 		
 		initComplete: function() {
-			if(this.opts.sidePage) {
-				this.animate(-1, true, 0);
-				this.animate(1, true, 0);
-			}
 			if(typeof this.opts.initComplete == 'function') {
 				this.opts.initComplete.call(this,this);
+			}
+		},
+
+		setSize: function(page) {
+			var page_gap = 0;
+
+			this._width = parseInt(this._tg.css('width'));
+			this._range = this.opts.range * this._width;
+			this._list_wrap.css({
+				width: this._width + 'px',
+				overflow: 'visible'
+			});
+			
+			this._item_w = (this._width - (this._view - 1) * this.opts.gap) / this._view;
+
+			if(page > 1 && page <= this._len) {
+				page_gap = (page - 1) * (this._item_w * this._view + this._view * this.opts.gap);
+			}
+
+			for(var i=0, len=this._len, gap=0; i<len; ++i) {
+				gap = this.opts.gap * i;
+
+				this._pos[i] = this._item_w * i - page_gap + gap;
+				this._start[i] = this._pos[i];
+
+				this._list.eq(i).css({
+					float: 'none',
+					position: 'absolute',
+					top: '0',
+					width: this._item_w + 'px'
+				});
+
+				this.move({
+					tg: this._list.eq(i),
+					to: this._pos[i]
+				});
+			}
+
+			if(this.opts.sidePage) {
+				this.position();
 			}
 		},
 		
 		resize: function() {
 			if(this.opts.flexible) {
-				var tmp_w = this._item_w;
-
-				this._width = parseInt(this._tg.css('width'));
-				this._item_w = (this._width - (this._view - 1) * this.opts.gap) / this._view;
-				this._range = this.opts.range * this._width;
-
-				this._list.css({
-					width: this._item_w + 'px'
-				});
-				this._list.parent().css({
-					width: this._width + 'px'
-				});
-
-				for(var i=0, len=this._len, gap=0; i<len; ++i) {
-					gap = this.opts.gap * i;
-					
-					this._pos[i] = (this._pos[i] - gap) / tmp_w * this._item_w + gap;
-					this._start[i] = (this._start[i] - gap) / tmp_w * this._item_w + gap;
-
-					this.move({
-						dir: 0,
-						tg: this._list.eq(i),
-						to: this._pos[i]
-					});
-				}
+				this.setSize(this.get_page().current);
 			}
 			
 			if(this.opts.breakpoints) {
@@ -458,15 +443,22 @@
 			var len = this._len;
 			var view = this._view;
 			var page_gap = view * this._item_w + view * this.opts.gap;
-			var i = 0;
-			
+
 			if(d == -1 || d == 1) {
 				this._startX = 0;
 				this._start = this._pos.slice(0);
 				this._left = d * page_gap;
 			} else {
-				if(this._left > page_gap) this._left = page_gap;
-				if(this._left < - page_gap) this._left = - page_gap;
+				if(this.opts.sidePage) {
+					if(this.get_page().current < 2) {
+						d = 1;
+					} else {
+						d = -1;
+					}
+				} else {
+					if(this._left > page_gap) this._left = page_gap;
+					if(this._left < -page_gap) this._left = -page_gap;
+				}
 			}
 			
 			if(this.opts.roll) {
@@ -479,7 +471,7 @@
 				if(view <= 1) max_chk = len - p;
 				
 				if((d == 1 && tmp_pos[p-1] >= 0) || (this._drag && tmp_pos[p-1] > 0)) {
-					for(i=0; i<view; ++i, ++p_min, ++p_max) {
+					for(var i=0; i<view; ++i, ++p_min, ++p_max) {
 						this._start[p_max] = this._start[p_min] - page_gap;
 						this.move({
 							tg: this._list.eq(p_max),
@@ -487,7 +479,7 @@
 						});
 					}
 				} else if((d == -1 && tmp_pos[max_chk] <= 0) || (this._drag && tmp_pos[max_chk] <= 0)) {
-					for(i=0; i<view; ++i, ++p_min, ++p_max) {
+					for(var i=0; i<view; ++i, ++p_min, ++p_max) {
 						this._start[p_min] = this._start[p_max] + page_gap;
 						this.move({
 							tg: this._list.eq(p_min),
