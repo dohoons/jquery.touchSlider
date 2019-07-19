@@ -50,6 +50,9 @@ $("#touchSlider").touchSlider({
 });
 ```
 
+### React.js에서 사용하기
+- Example : https://codesandbox.io/s/jquerytouchslider-ri7zy
+
 ## Options
 
 | Option Name | Type | Default | Description |
