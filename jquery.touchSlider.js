@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.6.2
+ * @version	1.6.3
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -674,7 +674,7 @@
 		counter: function() {
 			var currentPage = this.get_page();
 			
-			if($.inArray(0, this._pos) < 0) {
+			if($.inArray(0, this._pos) < 0 && this._len > 0) {
 				this.opts.page = 0;
 				this.init();
 			}
