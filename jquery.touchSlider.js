@@ -23,6 +23,7 @@
  *		paging			-	page control 생성 (default true)
  *		sidePage		-	사이드 페이지 사용 (default false)
  *		initComplete 	-	초기화 콜백
+ *		destroyComplete	-	제거 콜백
  *		counter			-	슬라이드 콜백, 카운터
  *		autoplay		-	자동움직임 관련 옵션 (Object)
  *		breakpoints		-	브레이크 포인트 옵션 (Object, default null)
@@ -275,6 +276,51 @@
 		initComplete: function() {
 			if(typeof this.opts.initComplete == 'function') {
 				this.opts.initComplete.call(this,this);
+			}
+		},
+
+		destroy: function() {
+			this._tg
+				.off('touchstart', this.touchstart)
+				.off('touchmove', this.touchmove)
+				.off('touchend', this.touchend)
+				.off('touchcancel', this.touchend)
+				.off('dragstart');
+
+			if(this.opts.useMouse) {
+				this._tg.off('mousedown', this.touchstart);
+			}
+
+			this._tg.css({ 'height': '' });
+			this._list_wrap.css({ 'width': '', 'overflow': '', 'left': '' });
+			this._list.css({
+				'float': '',
+				'width': '',
+				'position': '',
+				'top': '',
+				'left': '',
+				'opacity': '',
+				'z-index': '',
+				'-moz-transition': '',
+				'-moz-transform': '',
+				'-ms-transition': '',
+				'-ms-transform': '',
+				'-webkit-transition': '',
+				'-webkit-transform': '',
+				'transition': '',
+				'transform': ''
+			});
+			this._list.removeAttr('aria-hidden');
+
+			this._list_wrap.find('.blank').remove();
+			this._tg.nextAll('.ts-controls:eq(0)').remove();
+
+			if(this.opts.autoplay.enable) {
+				this.autoStop();
+			}
+
+			if(typeof this.opts.destroyComplete == 'function') {
+				this.opts.destroyComplete.call(this,this);
 			}
 		},
 
