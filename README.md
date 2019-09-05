@@ -82,9 +82,9 @@ $("#touchSlider").touchSlider({
 | init(options) | 슬라이더 초기화 |
 | destroy() | 슬라이더 기능 제거 |
 | go_page(index) | index 페이지로 이동 |
-| autoPlay() | 자동 넘김 시작  |
-| autoStop() | 자동 넘김 정지  |
-| autoPauseToggle() | 자동 넘김 시작/정지 토글  |
+| autoPlay() | 자동 넘김 시작 |
+| autoStop() | 자동 넘김 정지 |
+| autoPauseToggle() | 자동 넘김 시작/정지 토글 |
 
 ## CallBack
 
@@ -92,4 +92,4 @@ $("#touchSlider").touchSlider({
 | --- | --- |
 | initComplete | 슬라이더가 초기화된 후 호출 |
 | destroyComplete | 슬라이더 기능이 제거된 후 호출 |
-| counter | 슬라이더를 넘긴 후 호출  |
+| counter | 슬라이더를 넘긴 후 호출 |
