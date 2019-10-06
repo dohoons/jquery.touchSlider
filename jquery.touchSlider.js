@@ -258,12 +258,14 @@
 				this.autoPlay();
 			}
 
-			this.addEventListener('click', function(e) {
+			this.removeEventListener('click', this._containerClickHandler || function() {}, true);
+			this._containerClickHandler = function(e) {
 				if(!_this._link) {
 					e.stopPropagation();
 					e.preventDefault();
 				}
-			}, true);
+			};
+			this.addEventListener('click', this._containerClickHandler, true);
 			
 			this.initComplete();
 
@@ -319,6 +321,8 @@
 			if(this.opts.autoplay.enable) {
 				this.autoStop();
 			}
+
+			this.removeEventListener('click', this._containerClickHandler, true);
 
 			if(typeof this.opts.destroyComplete == 'function') {
 				this.opts.destroyComplete.call(this,this);
