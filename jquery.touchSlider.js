@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.6.8
+ * @version	1.6.9
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
@@ -480,7 +480,10 @@
 				this._scroll = false;
 			} else {
 				this.animate(this.direction());
-				this.position();
+				
+				if(this.opts.sidePage) {
+					this.position();
+				}
 
 				this._drag = false;
 				this._scroll = true;
