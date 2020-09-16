@@ -2,7 +2,7 @@
  * @name	jQuery.touchSlider
  * @author	dohoons ( http://dohoons.com/ )
  *
- * @version	1.6.9
+ * @version	1.6.10
  * @since	201106
  *
  * @param Object	settings	환경변수 오브젝트
