@@ -166,10 +166,7 @@
 					.on('mousedown', this.touchstart);
 			}
 
-			if(this.opts.roll) {
-				if(this._len / this._view <= 1) {
-					this.opts.roll = false;
-				}
+			if(this.roll_chk()) {
 				if(this._len % this._view > 0) {
 					var blank = $(document.createElement(this._list.eq(0).prop('tagName'))).hide().addClass('blank');
 					var cnt = this._view - (this._len % this._view);
@@ -517,7 +514,7 @@
 				}
 			}
 			
-			if(this.opts.roll) {
+			if(this.roll_chk()) {
 				var tmp_pos = this._pos.slice(0).sort(function(a,b){return a-b;});
 				var max_chk = tmp_pos[len-view];
 				var p_min = $.inArray(tmp_pos[0], this._pos);
@@ -665,7 +662,7 @@
 				var to = 0;
 				
 				if(btn_click) this.position(dir);
-				if(this._left === 0 || (!this.opts.roll && this.limit_chk()) ) gap = 0;
+				if(this._left === 0 || (!this.roll_chk() && this.limit_chk()) ) gap = 0;
 
 				for(var i=0, len = this._len; i<len; ++i) {
 					from = this._pos[i];
@@ -702,6 +699,10 @@
 		limit_chk: function() {
 			var last_p = parseInt((this._len - 1) / this._view) * this._view;
 			return ( (this._start[0] === 0 && this._left > 0) || (this._start[last_p] === 0 && this._left < 0) );
+		},
+
+		roll_chk: function() {
+			return this.opts.roll && this._len / this._view > 1;
 		},
 		
 		go_page: function(i) {
@@ -757,7 +758,7 @@
 			this._timer = setInterval(function() {
 				if(_this.opts.autoplay.enable && !_this._drag) {
 					var page = _this.get_page();
-					if(page.current == page.total && !_this.opts.roll) {
+					if(page.current == page.total && !_this.roll_chk()) {
 						_this.go_page(0);
 					} else {
 						_this.animate(-1, true);
