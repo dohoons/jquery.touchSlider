@@ -1,6 +1,6 @@
 /**
  * @name	jQuery.touchSlider
- * @author	dohoons ( http://dohoons.com/ )
+ * @author	dohoons ( https://github.com/dohoons )
  *
  * @version	1.6.10
  * @since	201106

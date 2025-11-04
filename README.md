@@ -6,7 +6,7 @@
 - jQuery 1.7+, IE7+ 지원
 
 ## Demo
-http://dohoons.com/test/flick
+https://dohoons.github.io/jquery.touchSlider/
 
 ## 설치 방법
 
